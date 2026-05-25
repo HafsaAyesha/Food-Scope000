@@ -9,8 +9,13 @@ export default defineConfig({
     allowedHosts: 'all',
     proxy: {
       '/api': {
-        target: process.env.VITE_API_URL || 'http://localhost:3000',
-        changeOrigin: true
+        target: process.env.VITE_API_URL || 'http://0.0.0.0:3000',
+        changeOrigin: true,
+        configure: (proxy) => {
+          proxy.on('error', (err) => {
+            console.warn('API proxy error (backend may still be starting):', err.message);
+          });
+        }
       }
     }
   }
