@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "ntt4B84e6-Ef96qmrwGyn"
+uri = "file://FoodScope_Project_Document.zip"
+type = "unspecified"
+title = "FoodScope Project Document (HTML + Screenshots)"

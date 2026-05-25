@@ -1,0 +1,23 @@
+Advanced Web Technologies - Lab Terminal: MERN Stack Application Development 
+
+CLO5 
+
+Maximum Marks: 50 
+
+The students are required to develop a MERN stack-based web application that includes the complete client-side views and it’s server side for any problem area. Following guidelines should be considered for the development process: 
+
+Consider a Single Page Application SPA that needs to be developed with a considerably high level of interactivity/dynamicity on the front-end. The application should also focus on the back end where there is some business logic that is required to be implemented with applicable database usage (proper CRUD operations). Also consider that there should be multiple actors who are interacting with the system (other than admin). 
+Implement all and any details that you can for the selected problem. Example websites are (but not limited to) social media platforms, online marketplaces, e-commerce platforms, collaborative websites, project management activities, chatting apps, designing websites, etc. 
+Identify your business name, purpose of the online presence, different services offered, as a proper Scope Statement, with clearly defined functionalities that need to be implemented. 
+Front-end should include proper Components, props and states usage, fetch API. 
+Properly implement a REST API for your identified users/modules using Mongoose for schema specification. Application should also allow for the authentication of the users as well. 
+Copied content shall stand cancelled. Submissions without appearing for Viva shall also be considered as no submissions. 
+CSS should be of an acceptable level. You can use any framework or templates. 
+Document should contain scope, REST design, Data design and UI screenshots with GitHub code link. Double check the link to be correct and working. 
+ 
+
+Submission Guidelines: 
+
+Group members: This task should be done by at most 2 students. Uploaded on Teams by 1 student only. 
+
+Viva schedule: Schedule shared separately. 
