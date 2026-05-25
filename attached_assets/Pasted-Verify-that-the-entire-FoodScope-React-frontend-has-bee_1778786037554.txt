@@ -1,0 +1,144 @@
+Verify that the entire FoodScope React frontend has been implemented correctly by analyzing the codebase only.
+
+Important Constraints:
+
+Do NOT run, build, compile, start, test, lint, or execute the application.
+Do NOT install, update, remove, or download any packages or dependencies.
+Do NOT use npm, yarn, pnpm, vite, or any CLI commands that execute the project.
+Do NOT open localhost or attempt browser previews.
+Perform verification strictly through static code inspection and file analysis.
+Do NOT modify backend logic or APIs.
+Do NOT rewrite existing frontend logic unless necessary to fix missing implementations.
+Only inspect and verify the source code structure, imports, components, routes, API calls, and implementation completeness.
+
+Verification Tasks:
+
+Project Structure Verification
+Check whether the frontend follows a clean and simple React structure such as:
+
+src/
+│
+├── components/
+├── pages/
+├── services/
+├── context/
+├── routes/
+├── styles/
+├── App.js
+└── index.js
+
+Routing Verification
+Verify:
+React Router is configured correctly
+All major pages are connected
+Navigation paths exist
+Protected/admin routes exist if required
+Authentication Verification
+Check for:
+Login page
+Register page
+Logout handling
+Token storage using localStorage
+Role-based rendering logic
+API Integration Verification
+Inspect whether:
+Axios or Fetch is used correctly
+API service files exist
+API endpoints are connected properly
+CRUD operations are implemented for required modules
+Module Verification
+
+Verify implementation for:
+
+Home
+
+Featured restaurants
+Trending food items
+Search bar
+Tag/category browsing
+
+Restaurants
+
+Listing page
+Details page
+Filters
+Metadata rendering
+Nearby/geolocation section UI
+
+Food Items
+
+Listing
+Details
+Ratings/reviews display
+
+Reviews
+
+Add/edit/delete review UI
+Rating system
+Photo upload handling
+Helpful voting
+Threaded comments
+
+Search
+
+Search UI
+Filtering logic
+Results page
+
+Tags
+
+Tag browsing
+Hierarchical display handling
+
+Notifications
+
+Notification components
+Live feed UI
+
+Admin Panel
+
+Dashboard
+User management UI
+Moderation pages
+Analytics display components
+Component Verification
+Check:
+Reusable components exist where appropriate
+Components are properly imported/exported
+No broken imports
+No obviously missing dependencies between files
+Styling Verification
+Verify:
+Basic CSS files exist
+Styling remains simple
+No unnecessary UI frameworks are used
+Code Simplicity Verification
+Ensure:
+Only plain React JavaScript is used
+No TypeScript files exist
+No Redux/Zustand/complex architecture exists
+Hooks usage remains simple (useState, useEffect, optional useContext)
+Consistency Verification
+Check for:
+Naming consistency
+Correct folder placement
+Clean separation of concerns
+Duplicate or dead files
+Final Verification Report
+Output:
+What is fully implemented
+What is partially implemented
+Missing pages/components/features
+Broken imports/routes if any
+Suggested code-only fixes if needed
+
+Do NOT:
+
+Execute the application
+Install packages
+Generate fake results
+Assume functionality without checking the actual code
+Modify backend code
+Use runtime verification
+
+Only verify based on actual source code inspection.

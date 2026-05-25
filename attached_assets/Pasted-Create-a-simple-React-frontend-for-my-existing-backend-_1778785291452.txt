@@ -1,0 +1,119 @@
+Create a simple React frontend for my existing backend APIs and business logic.
+
+Project Name: FoodScope
+
+Important Constraints:
+
+Use ONLY plain React (JavaScript).
+Do NOT use TypeScript.
+Do NOT use Next.js, Redux, Zustand, complex state management, or advanced architecture.
+Keep the code beginner-friendly, clean, and easy to understand.
+Use simple functional components with basic React hooks only (useState, useEffect, useContext if needed).
+Do NOT overengineer anything.
+Do NOT modify backend logic or APIs.
+Do NOT create mock APIs.
+Do NOT run, compile, build, test, lint, start, or execute the project in any way.
+Do NOT install, download, update, or remove any packages or dependencies.
+Do NOT use npm, yarn, pnpm, vite, or any package manager commands.
+Do NOT open localhost or attempt to preview the application.
+Do NOT create screenshots, previews, or downloadable packaged outputs.
+ONLY write and organize the frontend code.
+Keep styling minimal and clean using basic CSS only.
+Focus on functionality and proper API integration.
+
+Frontend Requirements:
+
+Build a complete React frontend connected to the existing backend APIs for the following modules:
+
+Authentication
+
+Login
+Register
+Logout
+Role-based UI rendering (Admin, Reviewer, User)
+
+Home Page
+
+Featured restaurants
+Trending food items
+Search bar
+Category/tag browsing
+
+Restaurants
+
+Restaurant listing page
+Restaurant details page
+Cuisine, rating, price, and tag filters
+Geolocation-based nearby restaurants section
+Restaurant images and metadata
+
+Food Items
+
+Food item listing
+Food item details
+Ratings and reviews
+
+Reviews
+
+Add review
+Edit/delete own review
+Star rating system
+Upload review photos
+Helpful/like voting
+Threaded comments
+
+Search
+
+Full-text search
+Filter UI
+Search results page
+
+Tags
+
+Hierarchical tag display
+Browse by tags
+
+Notifications
+
+Real-time notifications UI
+Live review feed UI
+
+Admin Panel
+
+Dashboard layout
+User management
+Restaurant moderation
+Review moderation
+Basic analytics display
+
+General Requirements
+
+Create reusable components where simple and appropriate.
+Use React Router for navigation.
+Use Axios or Fetch for API calls.
+Store auth token simply using localStorage.
+Add loading states and basic error handling.
+Keep folder structure clean and simple.
+
+
+Expected Output:
+
+Full React frontend code structure
+Components and pages
+API integration code
+Routing setup
+Minimal CSS
+Clear folder organization
+
+Do not:
+
+Use TypeScript
+Use advanced React patterns
+Use unnecessary abstractions
+Use complex UI libraries
+Rewrite backend logic
+Add fake/demo data unless absolutely necessary
+Execute the project in any environment
+Install or download anything
+
+The frontend should look modern but simple, lightweight, and easy to maintain.

@@ -1,0 +1,61 @@
+Fix the backend schema and data modeling issues in the FoodScope project based on the problems discovered during MongoDB seeding.
+
+Important Constraints:
+
+Do NOT delete working data blindly.
+Do NOT break existing APIs or frontend integration.
+Do NOT redesign the entire architecture.
+Make minimal, safe, production-ready fixes.
+Do NOT rely on collection.insertMany() as a workaround for schema or hook issues.
+Ensure all fixes are compatible with Mongoose best practices.
+
+Context:
+The seed data was already inserted into MongoDB, but had to be manually modified due to schema and hook limitations. The goal is to fix the root causes so future seeding and normal operations work correctly without bypassing Mongoose.
+
+Issues to Fix:
+
+User Schema Role Issue
+Current enum: ['user', 'reviewer']
+Problem: Admin role required but missing
+Fix: Extend schema safely to support admin role without breaking existing users
+Dish Model Schema Mismatch
+restaurant_id exists in DB and indexes but is missing in schema
+Fix: Properly define restaurant_id in Mongoose schema
+Restaurant Location Hook Dependency
+pre('validate') hook depends on lat/lng to sync location
+Fix:
+Ensure schema explicitly supports lat and lng
+Ensure hook behavior is consistent and does not break inserts or updates
+Do NOT remove hook unless absolutely necessary
+Review Unique Constraint
+(user_id + restaurant_id) unique index exists
+Ensure seed logic and API logic properly respect this constraint
+No schema removal, only ensure consistency handling exists in code
+Password Hashing Issue
+bcrypt pre-save hook does not run with direct collection inserts
+Fix:
+Ensure user creation always uses Mongoose save() flow
+Ensure password hashing works reliably in all normal code paths
+Do NOT rely on pre-hashed passwords in production logic
+Seed Data Consistency
+Update seed strategy so it does NOT require bypassing Mongoose validation or hooks
+Ensure future seed data works using normal model operations
+
+Expected Output:
+
+Updated Mongoose schemas
+Any required model fixes
+Safe adjustments to hooks if needed
+Guidance or helper functions for correct seeding approach
+No breaking changes to existing API behavior
+
+Do NOT:
+
+Rewrite entire backend
+Change frontend
+Remove existing data unless explicitly necessary
+Use raw MongoDB operations as a workaround
+Introduce new dependencies
+
+Goal:
+Make the system schema-correct and Mongoose-compliant so that seed data, authentication, relationships, and hooks all work properly without manual modifications or bypassing validation.
