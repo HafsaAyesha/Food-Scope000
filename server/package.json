@@ -6,6 +6,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "migrate:db": "node src/migrations/run-migrations.js",
+    "seed": "node src/seeds/seed.js",
     "check:integrity": "node src/migrations/integrity-checks.js",
     "dev:client": "npm run dev --prefix client",
     "test": "echo \"Error: no test specified\" && exit 1"
