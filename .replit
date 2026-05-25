@@ -1,4 +1,4 @@
-modules = ["nodejs-20"]
+modules = ["nodejs-20", "web", "nix"]
 [agent]
 expertMode = true
 stack = "BEST_EFFORT_FALLBACK"
@@ -36,7 +36,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd client && npm run dev"
+args = "cd server/src/views && npm run dev"
 waitForPort = 5000
 
 [[workflows.workflow]]
@@ -48,13 +48,9 @@ outputType = "console"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "node server.js"
+args = "cd server && node server.js"
 waitForPort = 3000
 
 [[ports]]
 localPort = 3000
 externalPort = 3000
-
-[[ports]]
-localPort = 5000
-externalPort = 80

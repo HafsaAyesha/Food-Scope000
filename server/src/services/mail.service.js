@@ -1,17 +1,29 @@
 const nodemailer = require('nodemailer');
 const config = require('../config');
 
-const transporter = nodemailer.createTransport({
-  host: config.MAIL_HOST,
-  port: config.MAIL_PORT,
-  secure: config.MAIL_PORT === 465,
-  auth: {
-    user: config.MAIL_USER,
-    pass: config.MAIL_PASS
-  }
-});
+const isMailConfigured = !!(config.MAIL_HOST && config.MAIL_PORT && config.MAIL_USER && config.MAIL_PASS && config.MAIL_FROM);
+
+let transporter = null;
+
+if (isMailConfigured) {
+  transporter = nodemailer.createTransport({
+    host: config.MAIL_HOST,
+    port: config.MAIL_PORT,
+    secure: config.MAIL_PORT === 465,
+    auth: {
+      user: config.MAIL_USER,
+      pass: config.MAIL_PASS
+    }
+  });
+} else {
+  console.warn('Mail config not set — email sending is disabled. Set MAIL_HOST, MAIL_PORT, MAIL_USER, MAIL_PASS, MAIL_FROM to enable.');
+}
 
 const sendMail = async ({ to, subject, html, text }) => {
+  if (!transporter) {
+    console.warn(`[Mail disabled] Would have sent "${subject}" to ${to}`);
+    return;
+  }
   await transporter.sendMail({
     from: config.MAIL_FROM,
     to,

@@ -1,15 +1,21 @@
-const { RateLimiterRedis } = require('rate-limiter-flexible');
+const { RateLimiterRedis, RateLimiterMemory } = require('rate-limiter-flexible');
 const redisService = require('./redis.service');
 
-const createLimiter = (keyPrefix, points, duration, blockDuration) => new RateLimiterRedis({
-  storeClient: redisService.client,
-  keyPrefix,
-  points,
-  duration,
-  blockDuration,
-  inmemoryBlockOnConsumed: points * 2,
-  inmemoryBlockDuration: blockDuration
-});
+const createLimiter = (keyPrefix, points, duration, blockDuration) => {
+  if (redisService.client) {
+    return new RateLimiterRedis({
+      storeClient: redisService.client,
+      keyPrefix,
+      points,
+      duration,
+      blockDuration,
+      inmemoryBlockOnConsumed: points * 2,
+      inmemoryBlockDuration: blockDuration,
+      insuranceLimiter: new RateLimiterMemory({ keyPrefix, points, duration, blockDuration })
+    });
+  }
+  return new RateLimiterMemory({ keyPrefix, points, duration, blockDuration });
+};
 
 const loginLimiter = createLimiter('login', 10, 15 * 60, 15 * 60);
 const registerLimiter = createLimiter('register', 5, 15 * 60, 15 * 60);
