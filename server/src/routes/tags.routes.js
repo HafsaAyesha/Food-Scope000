@@ -11,8 +11,8 @@ const {
   addTagToRestaurant
 } = require('../controllers/tags.controller');
 
-router.get('/tags', listTags);
-router.post('/tags', authenticate, requireRole('reviewer', 'admin'), createNewTag);
+router.get('/', listTags);
+router.post('/', authenticate, requireRole('reviewer', 'admin'), createNewTag);
 
 router.post(
   '/restaurants/:id/tags',

@@ -4,7 +4,7 @@ const { createApiError } = require('../utils/api-error');
 const listRestaurants = async ({ filters = {}, page = 1, limit = 10, sort = {} } = {}) => {
   const skip = Math.max(0, page - 1) * limit;
   const [restaurants, total] = await Promise.all([
-    restaurantRepo.find(filters, { sort, skip, limit, select: 'name cuisine_type price_range avg_rating address thumbnail' }),
+    restaurantRepo.findAll(filters, { sort, skip, limit, select: 'name cuisine_type price_range avg_rating address thumbnail' }),
     restaurantRepo.count(filters)
   ]);
 
