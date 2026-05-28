@@ -9,7 +9,7 @@ const { hashToken, createAccessToken } = require('../services/token.service');
 const { logAuditEvent } = require('../services/audit.service');
 const mailService = require('../services/mail.service');
 const config = require('../config');
-const isMailConfigured = !!(config.MAIL_HOST && config.MAIL_PORT && config.MAIL_USER && config.MAIL_PASS && config.MAIL_FROM);
+const { isMailConfigured } = mailService;
 
 const registerAttemptStore = new Map();
 const forgotPasswordStore = new Map();
@@ -76,17 +76,26 @@ const register = async (req, res) => {
       throw createApiError(409, 'AUTH_EMAIL_EXISTS', 'CONFLICT_ERROR', 'Email already registered.');
     }
 
+    const mailReady = isMailConfigured();
     const user = await User.create({
       name: name.trim(),
       email: email.toLowerCase(),
       password,
       role: role || 'user',
-      isVerified: !isMailConfigured
+      isVerified: !mailReady
     });
 
+    if (mailReady) {
+      const rawToken = generateSecureToken();
+      user.emailVerificationToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+      user.emailVerificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+      await user.save();
+      await mailService.sendVerificationEmail(user, rawToken);
+    }
+
     res.status(201).json({
-      message: isMailConfigured
-        ? 'Account created. Check email for verification.'
+      message: mailReady
+        ? 'Account created. Please check your email to verify your account before logging in.'
         : 'Account created. You can log in immediately.',
       user: { id: user._id, name: user.name, email: user.email, role: user.role, created_at: user.createdAt }
     });
@@ -319,4 +328,50 @@ const resetUserPassword = async (req, res) => {
   }
 };
 
-module.exports = { register, login, logout, refresh, forgotPassword, resetUserPassword, getMe };
+const verifyEmail = async (req, res) => {
+  try {
+    const { token } = req.body;
+    if (!token) throw createApiError(400, 'AUTH_VERIFY_MISSING_TOKEN', 'VALIDATION_ERROR', 'Verification token is required.');
+
+    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+    const user = await User.findOne({
+      emailVerificationToken: tokenHash,
+      emailVerificationExpires: { $gt: new Date() }
+    });
+
+    if (!user) throw createApiError(400, 'AUTH_VERIFY_INVALID_TOKEN', 'VALIDATION_ERROR', 'Verification link is invalid or has expired.');
+    if (user.isVerified) return res.json({ message: 'Email already verified. You can log in.' });
+
+    user.isVerified = true;
+    user.emailVerificationToken = undefined;
+    user.emailVerificationExpires = undefined;
+    await user.save();
+
+    res.json({ message: 'Email verified successfully. You can now log in.' });
+  } catch (err) {
+    handleError(res, err);
+  }
+};
+
+const resendVerification = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) throw createApiError(400, 'AUTH_EMAIL_REQUIRED', 'VALIDATION_ERROR', 'Email is required.');
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+
+    if (user && !user.isVerified && isMailConfigured()) {
+      const rawToken = generateSecureToken();
+      user.emailVerificationToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+      user.emailVerificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+      await user.save();
+      await mailService.sendVerificationEmail(user, rawToken);
+    }
+
+    res.json({ message: 'If that email exists and is unverified, a new link has been sent.' });
+  } catch (err) {
+    handleError(res, err);
+  }
+};
+
+module.exports = { register, login, logout, refresh, forgotPassword, resetUserPassword, getMe, verifyEmail, resendVerification };

@@ -10,7 +10,9 @@ const {
   refresh,
   forgotPassword,
   resetUserPassword,
-  getMe
+  getMe,
+  verifyEmail,
+  resendVerification
 } = require('../controllers/auth.controller');
 
 // public routes
@@ -19,6 +21,8 @@ router.post('/login', login);
 router.post('/refresh', refresh);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetUserPassword);
+router.post('/verify-email', verifyEmail);
+router.post('/resend-verification', resendVerification);
 
 router.get('/me', authenticate, getMe);
 router.post('/logout', authenticate, logout);
