@@ -82,7 +82,8 @@ export function useGeolocation() {
     if (payload.attempts !== undefined) setAttempts(payload.attempts)
   }, [])
 
-  const completeSuccess = useCallback((coords, usedSource = 'browser') => {
+  const completeSuccess = useCallback((pos, usedSource = 'browser') => {
+    const coords = pos.coords || pos
     const position = { lat: coords.latitude, lng: coords.longitude }
     storeCachedPosition(position)
     setStateSafe({ status: 'success', position, error: null, message: '', isRetryable: false, source: usedSource })
