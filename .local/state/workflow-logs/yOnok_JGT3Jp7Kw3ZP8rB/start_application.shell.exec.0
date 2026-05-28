@@ -1,0 +1,193 @@
+
+> foodscope-client@1.0.0 dev
+> vite
+
+[1G[0K
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m155[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5000[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://172.24.0.2:[1m5000[22m/[39m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+API proxy error (backend may still be starting): connect ECONNREFUSED 0.0.0.0:3000
+[2m4:43:37 PM[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/v1/restaurants?limit=6[39m
+Error: connect ECONNREFUSED 0.0.0.0:3000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)
+API proxy error (backend may still be starting): connect ECONNREFUSED 0.0.0.0:3000
+[2m4:43:37 PM[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/v1/tags[39m
+Error: connect ECONNREFUSED 0.0.0.0:3000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)
+API proxy error (backend may still be starting): connect ECONNREFUSED 0.0.0.0:3000
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m4:43:37 PM[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/v1/tags[39m
+Error: connect ECONNREFUSED 0.0.0.0:3000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) [33m(x2)[39m
+API proxy error (backend may still be starting): connect ECONNREFUSED 0.0.0.0:3000
+[2m4:43:37 PM[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/v1/restaurants?limit=6[39m
+Error: connect ECONNREFUSED 0.0.0.0:3000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m4:48:18 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/Home.jsx, /src/pages/RestaurantList.jsx[22m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m4:52:11 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/Home.jsx, /src/pages/RestaurantList.jsx[22m [33m(x2)[39m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m4:52:22 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/Home.jsx[22m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m4:58:30 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/Register.jsx[22m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m4:59:01 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles/main.css[22m
+[1G[0K⠙[1G[0K

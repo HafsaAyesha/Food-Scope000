@@ -1,0 +1,6 @@
+◇ injected env (0) from ../.env [2m// tip: ◈ secrets for agents [www.dotenvx.com][0m
+◇ injected env (0) from .env [2m// tip: ◈ encrypted .env [www.dotenvx.com][0m
+Redis URL not configured — skipping Redis connection, using in-memory fallback.
+The server is running on 3000
+{"level":30,"time":1779988122381,"pid":3986,"hostname":"repl","event":"mongo_connected","msg":"MongoDB connected"}
+{"level":30,"time":1779988374513,"pid":3986,"hostname":"repl","msg":"Shutting down: closing MongoDB connection"}

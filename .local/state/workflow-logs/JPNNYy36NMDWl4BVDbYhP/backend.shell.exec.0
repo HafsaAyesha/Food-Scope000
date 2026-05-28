@@ -1,0 +1,4 @@
+◇ injected env (0) from ../.env [2m// tip: ⌘ custom filepath { path: '/custom/path/.env' }[0m
+◇ injected env (0) from .env [2m// tip: ⌘ multiple files { path: ['.env.local', '.env'] }[0m
+Environment validation failed:
+  - "COOKIE_SECRET" length must be at least 32 characters long
