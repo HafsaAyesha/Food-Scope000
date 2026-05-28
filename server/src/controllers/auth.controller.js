@@ -7,6 +7,7 @@ const { createApiError, handleError } = require('../utils/api-error');
 const { runTransaction } = require('../services/db.service');
 const { hashToken, createAccessToken } = require('../services/token.service');
 const { logAuditEvent } = require('../services/audit.service');
+const mailService = require('../services/mail.service');
 
 const registerAttemptStore = new Map();
 const forgotPasswordStore = new Map();
@@ -237,6 +238,7 @@ const forgotPassword = async (req, res) => {
       });
 
       await logAuditEvent({ actorId: user._id, actionType: 'password_reset_requested', targetEntity: 'User', targetId: user._id, metadata: { ip: ipAddress } });
+      await mailService.sendResetPasswordEmail(user, rawToken);
     }
 
     res.json({ message: 'Reset link sent if email exists.' });

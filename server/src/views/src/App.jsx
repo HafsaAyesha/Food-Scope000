@@ -16,6 +16,7 @@ import AdminRestaurants from './pages/admin/AdminRestaurants'
 import AdminReviews from './pages/admin/AdminReviews'
 import CreateRestaurant from './pages/CreateRestaurant'
 import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
@@ -50,6 +51,7 @@ function AppRoutes() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/restaurants" element={<RestaurantList />} />
           <Route path="/restaurants/new" element={<ReviewerRoute><CreateRestaurant /></ReviewerRoute>} />
           <Route path="/restaurants/:id" element={<RestaurantDetail />} />
