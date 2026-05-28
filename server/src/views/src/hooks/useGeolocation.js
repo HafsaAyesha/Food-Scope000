@@ -14,6 +14,11 @@ const loadCachedPosition = () => {
       sessionStorage.removeItem(GEO_CACHE_KEY)
       return null
     }
+    const { lat, lng } = parsed.position || {}
+    if (typeof lat !== 'number' || typeof lng !== 'number' || !Number.isFinite(lat) || !Number.isFinite(lng)) {
+      sessionStorage.removeItem(GEO_CACHE_KEY)
+      return null
+    }
     return parsed.position
   } catch {
     return null

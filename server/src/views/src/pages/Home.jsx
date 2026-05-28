@@ -243,6 +243,13 @@ export default function Home() {
                 )}
               </div>
             )}
+            {(geoStatus === 'success' || geoStatus === 'fallback') && (
+              <div className="nearby-actions">
+                <button type="button" className="btn btn-outline btn-sm" onClick={() => { clearLocation(); requestLocation() }}>
+                  Refresh Location
+                </button>
+              </div>
+            )}
           </div>
 
           {loadingIpFallback && <div className="center-spinner"><Spinner /></div>}
