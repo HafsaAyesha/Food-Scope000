@@ -675,6 +675,21 @@ textarea.form-control { resize: vertical; min-height: 80px; }
 .tips-list { list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.88rem; color: var(--text-muted); }
 .tips-list li { line-height: 1.4; }
 
+/* ── Form validation ── */
+.input-error { border-color: #ef4444 !important; }
+.field-error { color: #b91c1c; font-size: 0.8rem; margin-top: 4px; }
+
+/* ── Password strength ── */
+.password-strength { margin-top: 8px; }
+.strength-bar { display: flex; gap: 4px; margin-bottom: 8px; }
+.strength-segment { flex: 1; height: 4px; border-radius: 2px; background: var(--border); transition: background 0.2s; }
+.strength-weak { background: #ef4444; }
+.strength-medium { background: #f59e0b; }
+.strength-strong { background: #22c55e; }
+.password-rules { list-style: none; display: flex; flex-direction: column; gap: 3px; font-size: 0.78rem; }
+.rule-pass { color: #15803d; }
+.rule-fail { color: #9ca3af; }
+
 /* ── Responsive helpers ── */
 @media (max-width: 600px) {
   .hero-search { flex-direction: column; }

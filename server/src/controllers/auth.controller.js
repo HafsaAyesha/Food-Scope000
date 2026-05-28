@@ -14,7 +14,23 @@ const isMailConfigured = !!(config.MAIL_HOST && config.MAIL_PORT && config.MAIL_
 const registerAttemptStore = new Map();
 const forgotPasswordStore = new Map();
 
-const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+const validateEmail = (email) => /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(email);
+const validateName = (name) => {
+  const trimmed = name.trim();
+  if (trimmed.length < 2) return 'Name must be at least 2 characters.';
+  if (trimmed.length > 50) return 'Name must be 50 characters or fewer.';
+  if (!/^[a-zA-Z\s'\-]+$/.test(trimmed)) return 'Name can only contain letters, spaces, hyphens, and apostrophes.';
+  return null;
+};
+const validatePassword = (pw) => {
+  if (pw.length < 8) return 'Password must be at least 8 characters.';
+  if (pw.length > 128) return 'Password must be 128 characters or fewer.';
+  if (!/[A-Z]/.test(pw)) return 'Password must contain at least one uppercase letter.';
+  if (!/[a-z]/.test(pw)) return 'Password must contain at least one lowercase letter.';
+  if (!/[0-9]/.test(pw)) return 'Password must contain at least one number.';
+  if (!/[^A-Za-z0-9]/.test(pw)) return 'Password must contain at least one special character (e.g. !@#$%).';
+  return null;
+};
 const generateSecureToken = () => crypto.randomBytes(32).toString('hex');
 const createRefreshToken = (user, rememberMe = false) =>
   jwt.sign(
@@ -46,8 +62,11 @@ const register = async (req, res) => {
       throw createApiError(400, 'AUTH_REGISTER_INVALID_INPUT', 'VALIDATION_ERROR', 'Missing required fields.');
     }
 
-    if (!validateEmail(email)) throw createApiError(400, 'AUTH_REGISTER_INVALID_EMAIL', 'VALIDATION_ERROR', 'Invalid email format.');
-    if (password.length < 8) throw createApiError(422, 'AUTH_WEAK_PASSWORD', 'VALIDATION_ERROR', 'Password must be at least 8 characters.');
+    const nameError = validateName(name);
+    if (nameError) throw createApiError(400, 'AUTH_REGISTER_INVALID_NAME', 'VALIDATION_ERROR', nameError);
+    if (!validateEmail(email)) throw createApiError(400, 'AUTH_REGISTER_INVALID_EMAIL', 'VALIDATION_ERROR', 'Invalid email address.');
+    const pwError = validatePassword(password);
+    if (pwError) throw createApiError(422, 'AUTH_WEAK_PASSWORD', 'VALIDATION_ERROR', pwError);
     if (role && !['user', 'reviewer'].includes(role)) throw createApiError(400, 'AUTH_INVALID_ROLE', 'VALIDATION_ERROR', 'Role must be user or reviewer.');
 
     const existing = await User.findOne({ email: email.toLowerCase() });
@@ -262,7 +281,8 @@ const resetUserPassword = async (req, res) => {
     const { token, new_password } = req.body;
 
     if (!token || !new_password) throw createApiError(400, 'AUTH_RESET_MISSING_FIELDS', 'VALIDATION_ERROR', 'Missing token or new_password.');
-    if (new_password.length < 8) throw createApiError(422, 'AUTH_WEAK_PASSWORD', 'VALIDATION_ERROR', 'New password is too weak.');
+    const pwResetError = validatePassword(new_password);
+    if (pwResetError) throw createApiError(422, 'AUTH_WEAK_PASSWORD', 'VALIDATION_ERROR', pwResetError);
 
     const tokenHash = hashToken(token);
 
