@@ -21,7 +21,7 @@ const schema = Joi.object({
   COOKIE_SAME_SITE: Joi.string().valid('lax', 'strict', 'none').default('lax'),
   COOKIE_SECURE: Joi.boolean().truthy('true').falsy('false').default(false),
   COOKIE_DOMAIN: Joi.string().optional(),
-  COOKIE_SECRET: Joi.string().min(32).optional(),
+  COOKIE_SECRET: Joi.string().min(16).optional(),
   MAIL_HOST: Joi.string().optional(),
   GEO_MAX_RADIUS_KM: Joi.number().min(1).max(50).default(50),
   GEO_MIN_RADIUS_KM: Joi.number().min(0.1).max(5).default(0.1),
