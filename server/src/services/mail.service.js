@@ -12,7 +12,7 @@ const getTransporter = () => {
     secure: Number(config.MAIL_PORT) === 465,
     auth: {
       user: config.MAIL_USER,
-      pass: config.MAIL_PASS
+      pass: (config.MAIL_PASS || '').replace(/\s/g, '')
     }
   });
 };
