@@ -64,5 +64,5 @@ externalPort = 3002
 MONGO_URI = "mongodb+srv://hafsaaye021_db_user:foodscope@foodscope.xmozgas.mongodb.net/?appName=FoodScope"
 NODE_ENV = "development"
 PORT = "3000"
-FRONTEND_URL = "http://localhost:5000"
+FRONTEND_URL = "https://33879294-9334-4d0b-996b-35ff16faebf5-00-y4yh5mek8mzp.pike.replit.dev"
 MAIL_PASS_OVERRIDE = "ocvwxkzsehfkpumc"
