@@ -13,14 +13,19 @@ const app = express();
 // Security headers
 app.use(helmet());
 
-// CORS: allow only configured frontend origins (comma-separated)
+// CORS: allow configured frontend origins plus Replit dev domains
 const allowedOrigins = (String(config.FRONTEND_URL || '')).split(',').map((s) => s.trim()).filter(Boolean);
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true); // allow server-to-server or same-origin
+    // Always allow Replit proxied domains
+    if (origin.endsWith('.replit.dev') || origin.endsWith('.repl.co') || origin.endsWith('.replit.app')) {
+      return callback(null, true);
+    }
     if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) return callback(null, true);
     return callback(new Error('CORS not allowed'), false);
   },
+  credentials: true,
   optionsSuccessStatus: 200
 }));
 
