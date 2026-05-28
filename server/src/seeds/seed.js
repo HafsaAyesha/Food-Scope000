@@ -335,6 +335,148 @@ const seed = async () => {
       status: 'approved'
     }),
 
+    // ── ADDITIONAL ISLAMABAD SPOTS ───────────────────────────────────────────
+
+    Restaurant.create({
+      name: 'Tuscany Courtyard',
+      description: 'Islamabad\'s finest Italian restaurant, tucked inside a beautiful colonial courtyard in F-7. The handmade pasta is prepared daily in-house, the wood-fired pizza oven was imported from Naples, and the tiramisu is the best in Pakistan. The candlelit outdoor courtyard with its climbing vines is one of the most romantic settings in the city. A proper Italian escape in the heart of Islamabad.',
+      cuisine_type: 'Italian',
+      price_range: '$$$',
+      avg_rating: 4.8,
+      address: 'House 13, Street 9, F-7/2, Islamabad, Pakistan',
+      location: { type: 'Point', coordinates: [73.0522, 33.7230] },
+      tags: [T['Italian'], T['Fine Dining'], T['Outdoor Seating'], T['Halal'], T['Family Friendly'], T['Vegetarian']],
+      thumbnail: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800',
+      owner_id: ownerKamran._id,
+      status: 'approved'
+    }),
+
+    Restaurant.create({
+      name: 'Cinnamon Café',
+      description: 'A charming all-day café and brunch spot in F-6 Supermarket beloved by Islamabad\'s working crowd. Famous for its flaky croissants, shakshuka, eggs Benedict, and an outstanding coffee menu. The signature cinnamon rolls — warm, sticky and enormous — have earned a devoted following. A calm, friendly atmosphere that makes it equally good for a laptop workday or a leisurely weekend brunch.',
+      cuisine_type: 'Continental',
+      price_range: '$$',
+      avg_rating: 4.6,
+      address: 'F-6 Supermarket, Islamabad, Pakistan',
+      location: { type: 'Point', coordinates: [73.0518, 33.7305] },
+      tags: [T['Continental'], T['Vegetarian'], T['Halal'], T['Outdoor Seating'], T['Student Friendly'], T['Delivery']],
+      thumbnail: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800',
+      owner_id: ownerZara._id,
+      status: 'approved'
+    }),
+
+    Restaurant.create({
+      name: 'Salt\'n Pepper F-8',
+      description: 'A Islamabad family dining institution in F-8 Markaz, going strong for over two decades. Salt\'n Pepper is known for its vast menu that does justice to both Pakistani classics — the karahi and biryani are excellent — and continental grills, pastas, and wood-fired dishes. Generous portions, fair prices, attentive service, and a comfortable setting make it the default choice for family celebrations.',
+      cuisine_type: 'Pakistani',
+      price_range: '$$',
+      avg_rating: 4.3,
+      address: 'F-8 Markaz, Islamabad, Pakistan',
+      location: { type: 'Point', coordinates: [73.0315, 33.7080] },
+      tags: [T['Pakistani'], T['Continental'], T['Halal'], T['Family Friendly'], T['Delivery'], T['Takeaway']],
+      thumbnail: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800',
+      owner_id: ownerFatima._id,
+      status: 'approved'
+    }),
+
+    Restaurant.create({
+      name: 'Hotspot Restaurant F-10',
+      description: 'A lively, no-frills fast food and grill spot in F-10 Markaz hugely popular with COMSATS and NUST students. The charcoal-grilled burgers, crispy fried chicken, and freshly made pizza are all reliable and generously sized. The loaded nachos and thick milkshakes have a cult following. Open until 3 AM — the place to be when you have a deadline and an empty stomach.',
+      cuisine_type: 'Fast Food',
+      price_range: '$',
+      avg_rating: 4.1,
+      address: 'F-10 Markaz, Islamabad, Pakistan',
+      location: { type: 'Point', coordinates: [73.0180, 33.7015] },
+      tags: [T['Fast Food'], T['Halal'], T['Student Friendly'], T['Takeaway'], T['Delivery'], T['Late Night']],
+      thumbnail: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=800',
+      owner_id: ownerBilal._id,
+      status: 'approved'
+    }),
+
+    Restaurant.create({
+      name: 'H-8 Charsi Karahi',
+      description: 'A legendary open-air karahi spot in H-8/1 that has been drawing students and locals from across south Islamabad for over 15 years. The "charsi" mutton karahi — cooked in a screaming-hot wok with tomatoes, green chillies, fresh ginger and a secret spice blend — is ready in under 10 minutes and arrives still sizzling. The naans are pulled fresh from the tandoor. Cash only, plastic seating, extraordinary food.',
+      cuisine_type: 'Pakistani',
+      price_range: '$',
+      avg_rating: 4.6,
+      address: 'H-8/1, Near Poly Clinic, Islamabad, Pakistan',
+      location: { type: 'Point', coordinates: [73.0780, 33.6960] },
+      tags: [T['Pakistani'], T['BBQ & Grills'], T['Halal'], T['Late Night'], T['Takeaway'], T['Student Friendly'], T['Family Friendly']],
+      thumbnail: 'https://images.unsplash.com/photo-1567529692333-de9fd6772897?w=800',
+      owner_id: ownerAhmed._id,
+      status: 'approved'
+    }),
+
+    Restaurant.create({
+      name: 'Pappasalis Pizza',
+      description: 'Islamabad\'s most popular home-grown pizza brand, with a flagship in F-7. Pappasalis is famous for its generous toppings, thick-crust pizzas, and signature creamy white sauce. The BBQ chicken pizza and the four-cheese pizza are bestsellers. Also does excellent garlic bread, pastas, and a brilliant chocolate lava cake. Reliable delivery across the F and G sectors.',
+      cuisine_type: 'Italian',
+      price_range: '$$',
+      avg_rating: 4.4,
+      address: 'F-7 Markaz, Islamabad, Pakistan',
+      location: { type: 'Point', coordinates: [73.0490, 33.7250] },
+      tags: [T['Italian'], T['Fast Food'], T['Halal'], T['Delivery'], T['Takeaway'], T['Student Friendly'], T['Family Friendly']],
+      thumbnail: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800',
+      owner_id: ownerSana._id,
+      status: 'approved'
+    }),
+
+    Restaurant.create({
+      name: 'Masoom\'s Restaurant',
+      description: 'A much-loved family restaurant in F-6 that has been a staple of Islamabad dining for decades. Masoom\'s excels at traditional Pakistani cooking — the daal makhani, butter chicken, and biryani are consistently excellent — alongside a solid Chinese menu. The warm hospitality and reliably good food make it the kind of place families return to for every occasion, from birthday dinners to post-exam celebrations.',
+      cuisine_type: 'Pakistani',
+      price_range: '$$',
+      avg_rating: 4.3,
+      address: 'F-6/3, Islamabad, Pakistan',
+      location: { type: 'Point', coordinates: [73.0498, 33.7315] },
+      tags: [T['Pakistani'], T['Chinese'], T['Halal'], T['Family Friendly'], T['Delivery'], T['Takeaway']],
+      thumbnail: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800',
+      owner_id: ownerKamran._id,
+      status: 'approved'
+    }),
+
+    Restaurant.create({
+      name: 'Chattar Forest Retreat',
+      description: 'A secluded hilltop restaurant above Chattar hidden among tall pine trees, offering one of the most peaceful dining experiences near Islamabad. The menu is a curated selection of Pakistani grills, BBQ platters and simple continental dishes, all made with fresh ingredients. The open-air seating surrounded by forest is magical in the monsoon season when the mist rolls in over the hills.',
+      cuisine_type: 'Pakistani',
+      price_range: '$$',
+      avg_rating: 4.5,
+      address: 'Chattar Hill Road, Near Chattar, Murree Road, Pakistan',
+      location: { type: 'Point', coordinates: [73.2280, 33.7740] },
+      tags: [T['Pakistani'], T['BBQ & Grills'], T['Halal'], T['Outdoor Seating'], T['Family Friendly'], T['Fine Dining']],
+      thumbnail: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800',
+      owner_id: ownerFatima._id,
+      status: 'approved'
+    }),
+
+    Restaurant.create({
+      name: 'Naan Stop — H-9',
+      description: 'A fast, affordable Pakistani grill and paratha spot in H-9 catering specifically to students and staff from COMSATS and Quaid-i-Azam University. The breakfast paratha deal — two stuffed parathas, chai, and an omelette for Rs 280 — is legendary in the area. Lunch specials change daily and always include a karahi, a daal, and a biryani. Efficient, clean, and extremely student-friendly.',
+      cuisine_type: 'Pakistani',
+      price_range: '$',
+      avg_rating: 4.2,
+      address: 'H-9, Near QAU Gate 2, Islamabad, Pakistan',
+      location: { type: 'Point', coordinates: [73.0720, 33.6780] },
+      tags: [T['Pakistani'], T['Street Food'], T['Halal'], T['Student Friendly'], T['Takeaway'], T['Delivery'], T['Late Night']],
+      thumbnail: 'https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?w=800',
+      owner_id: ownerBilal._id,
+      status: 'approved'
+    }),
+
+    Restaurant.create({
+      name: 'The Bunker Café',
+      description: 'A quirky, industrial-themed café in G-10 Markaz popular with COMSATS students for its strong coffee, filling sandwiches, and free high-speed WiFi. The all-day breakfast menu, grilled sandwiches, and cold brews are the highlights. Board games on every table and a playlist that always hits right. The go-to spot for study groups, project meetings, and anyone who just needs a good cup of coffee far from the lecture hall.',
+      cuisine_type: 'Continental',
+      price_range: '$',
+      avg_rating: 4.3,
+      address: 'G-10 Markaz, Islamabad, Pakistan',
+      location: { type: 'Point', coordinates: [73.0380, 33.6910] },
+      tags: [T['Continental'], T['Fast Food'], T['Halal'], T['Vegetarian'], T['Student Friendly'], T['Delivery'], T['Late Night']],
+      thumbnail: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800',
+      owner_id: ownerZara._id,
+      status: 'approved'
+    }),
+
     Restaurant.create({
       name: 'Andaaz Rooftop — F-7',
       description: 'A stylish rooftop restaurant above Jinnah Super with panoramic views of the Margalla Hills. Andaaz serves refined Pakistani and Mughal-inspired cuisine — the dum biryani is prepared in sealed degs, the haleem is silky and complex, and the dessert platter of kheer, gajar halwa and sohan halwa is a proper finale. Dress smart, book a table for sunset, and enjoy some of the finest food in Islamabad.',
@@ -356,7 +498,10 @@ const seed = async () => {
     desiDhaba, campusGrill, g9Karahi, i8FoodStreet, tandooriNights,
     chattarKabab, pineView, murrreeNihari,
     monal, chaayeKhana, kabul, tabaq,
-    savourFoods, lordOfWings, melodyBBQ, nomadCoffee, andaaz
+    savourFoods, lordOfWings, melodyBBQ, nomadCoffee,
+    tuscany, cinnamonCafe, saltNPepper, hotspot, h8Charsi,
+    pappasalis, masooms, chattarForest, naanStop, bunkerCafe,
+    andaaz
   ] = restaurants;
 
   // ── 4. DISHES ─────────────────────────────────────────────────────────────
@@ -437,6 +582,56 @@ const seed = async () => {
     { name: 'Single Origin Pour-Over', description: 'Rotating single-origin beans from Ethiopia, Colombia or Guatemala — ask the barista for the current selection', price: 450, dietary_tags: ['vegan', 'gluten-free', 'vegetarian'], restaurant_id: nomadCoffee._id },
     { name: 'Avocado Toast', description: 'Sourdough toast with smashed avocado, poached eggs, chilli flakes, and microgreens', price: 850, dietary_tags: ['vegetarian'], restaurant_id: nomadCoffee._id },
     { name: 'Overnight Oats', description: 'Rolled oats soaked in almond milk with chia seeds, mango, and a drizzle of honey', price: 650, dietary_tags: ['vegan', 'gluten-free', 'vegetarian'], restaurant_id: nomadCoffee._id },
+
+    // Tuscany Courtyard
+    { name: 'Handmade Tagliatelle al Ragù', description: 'Daily-made egg pasta with a slow-cooked beef ragù, parmesan and fresh basil', price: 1800, dietary_tags: ['halal'], restaurant_id: tuscany._id },
+    { name: 'Margherita from the Wood Fire', description: 'San Marzano tomato, fior di latte mozzarella and fresh basil on a Neapolitan-style thin crust', price: 1400, dietary_tags: ['vegetarian', 'halal'], restaurant_id: tuscany._id },
+    { name: 'Tiramisu', description: 'Made fresh every morning with mascarpone, Ladyfinger biscuits, espresso and a dusting of Valrhona cocoa', price: 850, dietary_tags: ['vegetarian'], restaurant_id: tuscany._id },
+
+    // Cinnamon Café
+    { name: 'Cinnamon Roll', description: 'Giant, warm, gooey cinnamon roll with cream cheese frosting — baked fresh every two hours', price: 380, dietary_tags: ['vegetarian'], restaurant_id: cinnamonCafe._id },
+    { name: 'Shakshuka', description: 'Two eggs poached in a spiced tomato-pepper sauce with feta, olives and sourdough soldiers', price: 680, dietary_tags: ['vegetarian'], restaurant_id: cinnamonCafe._id },
+    { name: 'Flat White', description: 'Double-shot espresso with velvety microfoam milk — available with almond or oat milk', price: 320, dietary_tags: ['vegetarian', 'gluten-free'], restaurant_id: cinnamonCafe._id },
+
+    // Salt'n Pepper F-8
+    { name: 'Chicken Karahi (Half)', description: 'Classic wok-fired chicken karahi with tomatoes, green chillies and fresh coriander, served with naan', price: 760, dietary_tags: ['halal', 'gluten-free'], restaurant_id: saltNPepper._id },
+    { name: 'Grilled Chicken Steak', description: 'Marinated 200g chicken breast, grilled and served with sautéed vegetables, mash and peppercorn sauce', price: 980, dietary_tags: ['halal', 'gluten-free'], restaurant_id: saltNPepper._id },
+    { name: 'Chicken Pulao', description: 'Fragrant whole-spice chicken pulao in the Islamabad style, served with raita and salad', price: 520, dietary_tags: ['halal', 'gluten-free'], restaurant_id: saltNPepper._id },
+
+    // Hotspot F-10
+    { name: 'Hotspot Signature Burger', description: 'Double beef patty with cheddar, caramelised onions, pickles and the secret Hotspot sauce in a brioche bun', price: 480, dietary_tags: ['halal'], restaurant_id: hotspot._id },
+    { name: 'Crispy Fried Chicken Meal', description: 'Three pieces of golden crispy fried chicken with coleslaw, fries and a drink', price: 550, dietary_tags: ['halal'], restaurant_id: hotspot._id },
+    { name: 'Thick Chocolate Milkshake', description: 'Blended Belgian chocolate ice cream, fresh milk and chocolate syrup — served in a mason jar', price: 320, dietary_tags: ['vegetarian'], restaurant_id: hotspot._id },
+
+    // H-8 Charsi Karahi
+    { name: 'Charsi Mutton Karahi (500g)', description: 'The real thing — wok-tossed mutton in a screaming-hot kahai with tomatoes, ginger and green chillies. Ready in 8 minutes.', price: 980, dietary_tags: ['halal', 'gluten-free'], restaurant_id: h8Charsi._id },
+    { name: 'Chicken Charsi Karahi (Half)', description: 'H-8\'s famous charsi-style chicken karahi — bold, peppery and sizzling hot', price: 680, dietary_tags: ['halal', 'gluten-free'], restaurant_id: h8Charsi._id },
+    { name: 'Tandoori Naan', description: 'Freshly pulled naan from the tandoor — plain, buttered or with garlic', price: 60, dietary_tags: ['vegetarian', 'halal'], restaurant_id: h8Charsi._id },
+
+    // Pappasalis
+    { name: 'BBQ Chicken Pizza (Large)', description: 'Smoky BBQ sauce base, grilled chicken, red onions, peppers and mozzarella on a thick golden crust', price: 1350, dietary_tags: ['halal'], restaurant_id: pappasalis._id },
+    { name: 'Four Cheese Pizza (Medium)', description: 'Mozzarella, cheddar, parmesan and cream cheese on a white garlic sauce base', price: 1100, dietary_tags: ['vegetarian', 'halal'], restaurant_id: pappasalis._id },
+    { name: 'Chocolate Lava Cake', description: 'Warm dark chocolate fondant with a molten centre, served with a scoop of vanilla ice cream', price: 420, dietary_tags: ['vegetarian'], restaurant_id: pappasalis._id },
+
+    // Masoom's
+    { name: 'Butter Chicken', description: 'Tender chicken tikka pieces in a velvety tomato-butter-cream gravy — a Masoom\'s classic since day one', price: 780, dietary_tags: ['halal', 'gluten-free'], restaurant_id: masooms._id },
+    { name: 'Daal Makhani', description: 'Black lentils slow-simmered overnight with butter, cream and a touch of fenugreek', price: 420, dietary_tags: ['vegetarian', 'gluten-free'], restaurant_id: masooms._id },
+    { name: 'Chicken Fried Rice', description: 'Fragrant wok-fried rice with egg, spring onion, chicken and soy — from the Chinese side of the menu', price: 550, dietary_tags: ['halal'], restaurant_id: masooms._id },
+
+    // Chattar Forest Retreat
+    { name: 'Forest BBQ Platter', description: 'Chicken tikka, seekh kabab, boti and grilled vegetables in a pine-forest setting — served with naan and dips', price: 2200, dietary_tags: ['halal'], restaurant_id: chattarForest._id },
+    { name: 'Monsoon Karahi', description: 'Slow-cooked mutton karahi with mountain herbs, served in a clay pot on the open-air deck', price: 1600, dietary_tags: ['halal', 'gluten-free'], restaurant_id: chattarForest._id },
+    { name: 'Kahwa', description: 'Kashmiri green tea with cardamom, cinnamon, saffron and crushed almonds', price: 250, dietary_tags: ['vegetarian', 'vegan', 'gluten-free'], restaurant_id: chattarForest._id },
+
+    // Naan Stop H-9
+    { name: 'Breakfast Paratha Deal', description: 'Two stuffed parathas (aloo or keema), masala omelette and a cup of doodh patti chai', price: 280, dietary_tags: ['halal', 'vegetarian'], restaurant_id: naanStop._id },
+    { name: 'Chicken Karahi (Full)', description: 'Fresh charsi-style chicken karahi cooked to order with naan — daily lunch special', price: 680, dietary_tags: ['halal', 'gluten-free'], restaurant_id: naanStop._id },
+    { name: 'Student Biryani (Half)', description: 'Spiced chicken biryani with raita and salad — the most popular lunch on campus', price: 220, dietary_tags: ['halal', 'gluten-free'], restaurant_id: naanStop._id },
+
+    // Bunker Café
+    { name: 'All-Day Breakfast Plate', description: 'Two eggs any style, grilled tomato, baked beans, sourdough toast and your choice of coffee or tea', price: 580, dietary_tags: ['vegetarian', 'halal'], restaurant_id: bunkerCafe._id },
+    { name: 'Grilled Club Sandwich', description: 'Triple-decker with grilled chicken, streaky beef, lettuce, tomato, cheddar and mayo on toasted sourdough', price: 480, dietary_tags: ['halal'], restaurant_id: bunkerCafe._id },
+    { name: 'Cold Brew Coffee', description: 'Slow-steeped 18-hour cold brew, served over ice — strong, smooth and perfect for late-night studying', price: 380, dietary_tags: ['vegan', 'vegetarian', 'gluten-free'], restaurant_id: bunkerCafe._id },
 
     // Andaaz Rooftop
     { name: 'Dum Biryani (Deg Style)', description: 'Sealed-deg biryani with tender mutton, saffron and fried onions — prepared the traditional way', price: 2200, dietary_tags: ['halal'], restaurant_id: andaaz._id },
@@ -519,6 +714,46 @@ const seed = async () => {
     { r: nomadCoffee, u: userSofia,  rating: 5, body: 'Finally a proper specialty coffee shop in Islamabad. The Ethiopian pour-over was exceptional — bright, fruity, beautiful clarity. The avocado toast is the best I\'ve had in Pakistan. Also the best place to work remotely with reliable WiFi and a calm atmosphere.' },
     { r: nomadCoffee, u: userAyesha, rating: 5, body: 'Nomad has completely spoiled me for regular coffee. The overnight oats are so good and the flat white is consistently excellent. The industrial decor is lovely and it never feels overcrowded. My favourite café in Islamabad.' },
 
+    // Tuscany Courtyard
+    { r: tuscany, u: userMariam, rating: 5, body: 'The best Italian restaurant in Pakistan, full stop. The handmade pasta is extraordinary — you can taste the freshness in every bite. The courtyard at night, lit by candles with vines overhead, is the most romantic setting in Islamabad. The tiramisu is a masterclass.' },
+    { r: tuscany, u: userSofia,  rating: 5, body: 'I have been to Italy and Tuscany Courtyard genuinely holds its own. The wood-fired margherita is perfect — the crust has exactly the right char, the mozzarella is fresh. Pricey but absolutely worth it for a special occasion.' },
+
+    // Cinnamon Café
+    { r: cinnamonCafe, u: userAyesha, rating: 5, body: 'The cinnamon rolls here are life-changing. Warm, gooey, enormous — I look forward to them every weekend. The shakshuka is also brilliant and the flat white is consistently the best coffee I have had in Islamabad. My favourite café in the city.' },
+    { r: cinnamonCafe, u: userOmar,   rating: 4, body: 'A lovely all-day café in F-6. The vibe is calm and welcoming, the WiFi is fast and the food is genuinely tasty. The shakshuka is perfectly spiced. Good place to work from for a few hours on a Saturday morning.' },
+
+    // Salt'n Pepper F-8
+    { r: saltNPepper, u: userAli,    rating: 4, body: 'A true Islamabad institution. The chicken karahi is consistently good and the grilled steak is impressive for a Pakistani family restaurant. Great for family dinners — the menu is wide enough for everyone to find something they love.' },
+    { r: saltNPepper, u: userUsman,  rating: 4, body: 'Salt\'n Pepper has been around for years and for good reason. Reliable, generous portions and the chicken pulao is very tasty. A solid, dependable choice for family gatherings in the F-8 area.' },
+
+    // Hotspot F-10
+    { r: hotspot, u: userHamza, rating: 4, body: 'The Hotspot signature burger is genuinely one of the best fast-food burgers near COMSATS. The double patty with that secret sauce is outstanding. Open till 3am which is a lifesaver during finals week. The chocolate milkshake is thick and brilliant.' },
+    { r: hotspot, u: userOmar,  rating: 4, body: 'Great late-night option for students in the F-10 / G-10 corridor. The crispy fried chicken meal is good value and the milkshakes are properly thick. Lively atmosphere in the evenings. Highly recommend for group dinners.' },
+
+    // H-8 Charsi Karahi
+    { r: h8Charsi, u: userAli,   rating: 5, body: 'The best charsi karahi within 5km of COMSATS, no contest. The mutton is incredibly tender and the sauce has that perfect bhuna spice. The naan is pulled fresh from the tandoor while you wait. Cash only and worth every rupee.' },
+    { r: h8Charsi, u: userUsman, rating: 4, body: 'Legendary open-air karahi spot in H-8. The chicken charsi karahi is ready in minutes and tastes like it has been cooking all day. Very popular with students — get there early on weekends or you will be waiting.' },
+
+    // Pappasalis
+    { r: pappasalis, u: userHamza,  rating: 4, body: 'The BBQ chicken pizza is exactly what you want from a pizza place — generous toppings, great crust, good sauce. The four-cheese pizza is brilliant too. The chocolate lava cake dessert is a must. Reliable delivery across F-7 and surrounding areas.' },
+    { r: pappasalis, u: userAyesha, rating: 4, body: 'One of the best local pizza brands in Islamabad. The thick crust pizzas are excellent and the toppings are always fresh. The lava cake is dangerously good. Good value for the quality and the delivery is always on time.' },
+
+    // Masoom's
+    { r: masooms, u: userMariam, rating: 4, body: 'Masoom\'s has been a staple of our family dinners for as long as I can remember. The butter chicken is rich and velvety — the recipe clearly has not changed in decades. The Chinese menu is also surprisingly good. Consistent, welcoming, excellent value.' },
+    { r: masooms, u: userSofia,  rating: 4, body: 'A dependable classic in F-6. The daal makhani is exactly as a daal makhani should be — rich, creamy and deeply flavoured. The chicken fried rice from the Chinese menu is very good. Genuinely family-friendly pricing and atmosphere.' },
+
+    // Chattar Forest Retreat
+    { r: chattarForest, u: userHamza, rating: 5, body: 'One of the most magical dining experiences near Islamabad. The forest BBQ platter in the middle of pine trees is unlike anything else. The monsoon karahi arrived sizzling in a clay pot. If you are driving anywhere near Chattar, stop here.' },
+    { r: chattarForest, u: userOmar,  rating: 4, body: 'Stunning setting — pine trees all around and total peace and quiet. The food is well above average for an outdoor grill spot. The kahwa is beautifully made. A great escape from the city for a long lunch on a weekend.' },
+
+    // Naan Stop H-9
+    { r: naanStop, u: userAyesha, rating: 4, body: 'The Rs 280 breakfast paratha deal is one of the great bargains in Islamabad. Two stuffed parathas, an omelette and a full cup of chai — I start most of my uni mornings here. The biryani at lunch is also excellent for the price.' },
+    { r: naanStop, u: userUsman,  rating: 4, body: 'Exactly the kind of spot you need near a university. Fast, clean, generous portions and everything is properly halal. The student biryani at Rs 220 is almost comically good value. The aloo paratha is the best breakfast deal near QAU.' },
+
+    // Bunker Café
+    { r: bunkerCafe, u: userSofia,  rating: 4, body: 'The Bunker is my go-to study café in G-10. Fast WiFi, good music, board games, and the cold brew is excellent. The all-day breakfast plate is very generous. Nobody rushes you out even if you sit for 4 hours on a laptop. Exactly what a student café should be.' },
+    { r: bunkerCafe, u: userAyesha, rating: 4, body: 'Lovely industrial-chic café in G-10 Markaz. The grilled club sandwich is the best I have had near COMSATS — very generous and the sourdough is properly toasted. The cold brew is strong and smooth. A great place to get through a project in peace.' },
+
     // Andaaz Rooftop
     { r: andaaz, u: userOmar,   rating: 5, body: 'Andaaz is the finest Pakistani dining in Islamabad. The dum biryani from the deg is extraordinary — fragrant, properly rested, with tender mutton throughout. The haleem is silky and complex. The rooftop with Margalla views at sunset is just perfect.' },
     { r: andaaz, u: userHamza,  rating: 5, body: 'A truly special restaurant. The dessert platter is a brilliant way to end — the sohan halwa alone is worth the visit. Service is attentive without being intrusive. The best high-end Pakistani restaurant in the city.' },
@@ -539,12 +774,14 @@ const seed = async () => {
   // ── Done ──────────────────────────────────────────────────────────────────
   console.log('\n✅ Seed complete! — Islamabad / Chattar / COMSATS Edition\n');
   console.log('AREAS COVERED:');
-  console.log('  Near COMSATS H-8  → Desi Dhaba, Campus Grill House');
+  console.log('  Near COMSATS H-8  → Desi Dhaba, Campus Grill House, H-8 Charsi Karahi');
   console.log('  G-9 / I-8 / G-11  → G-9 Karahi House, I-8 Food Street, Tandoori Nights');
-  console.log('  Chattar/Murree Rd → Chattar Chowk Kabab Corner, Pine View Café, Nihari House');
-  console.log('  F-7 / F-6 / F-11  → Monal, Chaaye Khana, Kabul, Tabaq, Andaaz, Nomad');
+  console.log('  H-9 / G-10        → Naan Stop, Bunker Café');
+  console.log('  Chattar/Murree Rd → Chattar Kabab, Pine View, Nihari House, Chattar Forest');
+  console.log('  F-7 / F-6         → Monal, Chaaye Khana, Kabul, Tabaq, Andaaz, Nomad, Tuscany, Cinnamon Café, Masoom\'s, Pappasalis');
+  console.log('  F-8               → Salt\'n Pepper');
+  console.log('  F-10              → Lord of the Wings, Hotspot');
   console.log('  Blue Area / G-7   → Savour Foods, Melody BBQ');
-  console.log('  F-10              → Lord of the Wings');
   console.log('─────────────────────────────────────────────────────────');
   console.log('Admin:              admin@foodscope.com        / Admin1234!');
   console.log('Restaurant Owner 1: zara.sheikh@foodscope.com  / Owner1234!');

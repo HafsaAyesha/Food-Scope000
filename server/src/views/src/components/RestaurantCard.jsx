@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import StarRating from './StarRating'
 
-export default function RestaurantCard({ restaurant }) {
+export default function RestaurantCard({ restaurant, distanceKm }) {
   const { id, _id, name, cuisine_type, price_range, avg_rating, address, thumbnail } = restaurant
   const rid = id || _id
 
@@ -13,6 +13,11 @@ export default function RestaurantCard({ restaurant }) {
           : <div className="restaurant-card-placeholder">🍽️</div>
         }
         {price_range && <span className="price-badge">{price_range}</span>}
+        {distanceKm != null && (
+          <span className="price-badge" style={{ left: '8px', right: 'auto', background: 'rgba(0,0,0,0.65)' }}>
+            📍 {Number(distanceKm).toFixed(1)} km
+          </span>
+        )}
       </div>
       <div className="restaurant-card-body">
         <h3 className="restaurant-card-name">{name}</h3>

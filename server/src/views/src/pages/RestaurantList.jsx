@@ -1,13 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import { getRestaurants } from '../api/restaurants'
+import { getNearby } from '../api/geo'
 import { getTags } from '../api/tags'
 import { useAuth } from '../context/AuthContext'
+import { useGeolocation } from '../hooks/useGeolocation'
 import { canCreateRestaurant } from '../utils/permissions'
 import { getErrorMessage } from '../utils/errors'
 import { pluralize } from '../utils/format'
 import RestaurantCard from '../components/RestaurantCard'
 import Spinner from '../components/Spinner'
+
+const NEAR_ME_RADIUS_KM = 10
+const LIMIT = 12
 
 export default function RestaurantList() {
   const { user } = useAuth()
@@ -18,6 +23,12 @@ export default function RestaurantList() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
+  const [nearMeMode, setNearMeMode] = useState(false)
+  const [nearMeLoading, setNearMeLoading] = useState(false)
+  const [nearMeError, setNearMeError] = useState('')
+
+  const { status: geoStatus, position, requestLocation } = useGeolocation()
+
   const [filters, setFilters] = useState({
     cuisine: searchParams.get('cuisine') || '',
     price_range: searchParams.get('price_range') || '',
@@ -25,7 +36,6 @@ export default function RestaurantList() {
     tag: searchParams.get('tag') || '',
   })
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1)
-  const limit = 12
 
   useEffect(() => {
     getTags()
@@ -34,9 +44,10 @@ export default function RestaurantList() {
   }, [])
 
   useEffect(() => {
+    if (nearMeMode) return
     setLoading(true)
     setError('')
-    const params = { page, limit }
+    const params = { page, limit: LIMIT }
     if (filters.cuisine) params.cuisine = filters.cuisine
     if (filters.price_range) params.price_range = filters.price_range
     if (filters.min_rating) params.min_rating = filters.min_rating
@@ -49,7 +60,55 @@ export default function RestaurantList() {
       })
       .catch(err => setError(getErrorMessage(err, 'Failed to load restaurants.')))
       .finally(() => setLoading(false))
-  }, [filters, page])
+  }, [filters, page, nearMeMode])
+
+  const loadNearby = useCallback(async (coords) => {
+    setNearMeLoading(true)
+    setNearMeError('')
+    try {
+      const res = await getNearby({
+        lat: coords.lat,
+        lng: coords.lng,
+        radius: NEAR_ME_RADIUS_KM,
+        limit: 50,
+        page: 1,
+      })
+      const data = res.data?.data
+      const list = data?.restaurants || []
+      setRestaurants(list)
+      setTotal(list.length)
+    } catch (err) {
+      setNearMeError(getErrorMessage(err, 'Could not load nearby restaurants.'))
+      setRestaurants([])
+      setTotal(0)
+    } finally {
+      setNearMeLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (nearMeMode && (geoStatus === 'success' || geoStatus === 'fallback') && position) {
+      loadNearby(position)
+    }
+  }, [nearMeMode, geoStatus, position, loadNearby])
+
+  const handleNearMeToggle = () => {
+    if (nearMeMode) {
+      setNearMeMode(false)
+      setNearMeError('')
+      setRestaurants([])
+      setTotal(0)
+      setPage(1)
+    } else {
+      setNearMeMode(true)
+      setNearMeError('')
+      if (geoStatus === 'idle' || geoStatus === 'denied') {
+        requestLocation()
+      } else if ((geoStatus === 'success' || geoStatus === 'fallback') && position) {
+        loadNearby(position)
+      }
+    }
+  }
 
   const applyFilters = e => {
     e.preventDefault()
@@ -68,24 +127,53 @@ export default function RestaurantList() {
     setPage(1)
   }
 
-  const totalPages = Math.ceil(total / limit)
+  const totalPages = nearMeMode ? 1 : Math.ceil(total / LIMIT)
+
+  const isLoading = nearMeMode ? (nearMeLoading || geoStatus === 'loading') : loading
+  const activeError = nearMeMode ? nearMeError : error
+
+  const geoStatusLabel = () => {
+    if (geoStatus === 'loading') return 'Getting your location…'
+    if (geoStatus === 'denied') return 'Location permission denied. Please allow it and try again.'
+    if (geoStatus === 'error') return 'Could not get your location. Please try again.'
+    if ((geoStatus === 'success' || geoStatus === 'fallback') && !nearMeLoading)
+      return `Showing ${total} restaurants within ${NEAR_ME_RADIUS_KM} km of your location`
+    return 'Finding restaurants near you…'
+  }
 
   return (
     <div className="container page-layout">
       <div className="page-top">
         <div>
           <h1 className="page-title">Restaurants</h1>
-          <p className="page-subtitle">{pluralize(total, 'restaurant')} found</p>
+          <p className="page-subtitle">
+            {nearMeMode ? geoStatusLabel() : `${pluralize(total, 'restaurant')} found`}
+          </p>
         </div>
-        {canCreateRestaurant(user) && (
-          <Link to="/restaurants/new" className="btn btn-primary">+ Add Restaurant</Link>
-        )}
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <button
+            type="button"
+            className={nearMeMode ? 'btn btn-primary' : 'btn btn-outline'}
+            onClick={handleNearMeToggle}
+            style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+          >
+            📍 {nearMeMode ? 'Near Me (on)' : 'Near Me'}
+          </button>
+          {canCreateRestaurant(user) && (
+            <Link to="/restaurants/new" className="btn btn-primary">+ Add Restaurant</Link>
+          )}
+        </div>
       </div>
 
       <div className="list-layout">
         {/* Filters sidebar */}
         <aside className="filter-panel">
           <h3 className="filter-title">Filters</h3>
+          {nearMeMode && (
+            <p style={{ fontSize: '13px', color: '#888', marginBottom: '12px' }}>
+              Filters are disabled in Near Me mode.
+            </p>
+          )}
           <form onSubmit={applyFilters}>
             <div className="form-group">
               <label className="label">Cuisine</label>
@@ -94,6 +182,7 @@ export default function RestaurantList() {
                 className="form-control"
                 placeholder="e.g. Italian"
                 value={filters.cuisine}
+                disabled={nearMeMode}
                 onChange={e => setFilters({ ...filters, cuisine: e.target.value })}
               />
             </div>
@@ -102,6 +191,7 @@ export default function RestaurantList() {
               <select
                 className="form-control"
                 value={filters.price_range}
+                disabled={nearMeMode}
                 onChange={e => setFilters({ ...filters, price_range: e.target.value })}
               >
                 <option value="">Any</option>
@@ -115,6 +205,7 @@ export default function RestaurantList() {
               <select
                 className="form-control"
                 value={filters.min_rating}
+                disabled={nearMeMode}
                 onChange={e => setFilters({ ...filters, min_rating: e.target.value })}
               >
                 <option value="">Any</option>
@@ -128,6 +219,7 @@ export default function RestaurantList() {
               <select
                 className="form-control"
                 value={filters.tag}
+                disabled={nearMeMode}
                 onChange={e => setFilters({ ...filters, tag: e.target.value })}
               >
                 <option value="">Any</option>
@@ -136,8 +228,8 @@ export default function RestaurantList() {
                 ))}
               </select>
             </div>
-            <button type="submit" className="btn btn-primary btn-full">Apply Filters</button>
-            <button type="button" className="btn btn-outline btn-full" onClick={clearFilters} style={{ marginTop: '8px' }}>
+            <button type="submit" className="btn btn-primary btn-full" disabled={nearMeMode}>Apply Filters</button>
+            <button type="button" className="btn btn-outline btn-full" onClick={clearFilters} disabled={nearMeMode} style={{ marginTop: '8px' }}>
               Clear All
             </button>
           </form>
@@ -145,21 +237,32 @@ export default function RestaurantList() {
 
         {/* Restaurant grid */}
         <div className="list-content">
-          {loading ? (
+          {isLoading ? (
             <div className="center-spinner"><Spinner /></div>
-          ) : error ? (
-            <div className="alert alert-error">{error}</div>
+          ) : activeError ? (
+            <div className="alert alert-error">{activeError}</div>
           ) : restaurants.length === 0 ? (
             <div className="empty-state">
-              <p>No restaurants match your filters.</p>
-              <button className="btn btn-outline btn-sm" onClick={clearFilters}>Clear filters</button>
+              {nearMeMode
+                ? <p>No restaurants found within {NEAR_ME_RADIUS_KM} km of your location.</p>
+                : <p>No restaurants match your filters.</p>
+              }
+              {!nearMeMode && (
+                <button className="btn btn-outline btn-sm" onClick={clearFilters}>Clear filters</button>
+              )}
             </div>
           ) : (
             <>
               <div className="restaurants-grid">
-                {restaurants.map(r => <RestaurantCard key={r.id || r._id} restaurant={r} />)}
+                {restaurants.map(r => (
+                  <RestaurantCard
+                    key={r.id || r._id}
+                    restaurant={r}
+                    distanceKm={nearMeMode ? r.distance_km : null}
+                  />
+                ))}
               </div>
-              {totalPages > 1 && (
+              {!nearMeMode && totalPages > 1 && (
                 <div className="pagination">
                   <button
                     className="btn btn-outline btn-sm"
