@@ -47,5 +47,14 @@ waitForPort = 3000
 outputType = "console"
 
 [[ports]]
+localPort = 3000
+externalPort = 3000
+
+[[ports]]
 localPort = 5000
 externalPort = 80
+
+[userenv]
+
+[userenv.shared]
+MONGO_URI = "mongodb+srv://hafsaaye021_db_user:foodscope@foodscope.xmozgas.mongodb.net/?appName=FoodScope"
