@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import { getRestaurants } from '../api/restaurants'
 import { getNearby } from '../api/geo'
@@ -9,6 +9,7 @@ import { canCreateRestaurant } from '../utils/permissions'
 import { getErrorMessage } from '../utils/errors'
 import { pluralize } from '../utils/format'
 import RestaurantCard from '../components/RestaurantCard'
+import NearbyMap from '../components/NearbyMap'
 import Spinner from '../components/Spinner'
 
 const NEAR_ME_RADIUS_KM = 10
@@ -28,6 +29,8 @@ export default function RestaurantList() {
   const [nearMeError, setNearMeError] = useState('')
 
   const { status: geoStatus, position, requestLocation } = useGeolocation()
+  const [selectedCardId, setSelectedCardId] = useState(null)
+  const cardRefs = useRef({})
 
   const [filters, setFilters] = useState({
     cuisine: searchParams.get('cuisine') || '',
@@ -92,6 +95,15 @@ export default function RestaurantList() {
     }
   }, [nearMeMode, geoStatus, position, loadNearby])
 
+  const handleSelectRestaurant = useCallback((id) => {
+    setSelectedCardId(id)
+    const el = cardRefs.current[id]
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    setTimeout(() => setSelectedCardId(null), 2000)
+  }, [])
+
   const handleNearMeToggle = () => {
     if (nearMeMode) {
       setNearMeMode(false)
@@ -99,6 +111,7 @@ export default function RestaurantList() {
       setRestaurants([])
       setTotal(0)
       setPage(1)
+      setSelectedCardId(null)
     } else {
       setNearMeMode(true)
       setNearMeError('')
@@ -253,14 +266,34 @@ export default function RestaurantList() {
             </div>
           ) : (
             <>
+              {nearMeMode && position && restaurants.length > 0 && (
+                <NearbyMap
+                  userPosition={position}
+                  restaurants={restaurants}
+                  onSelectRestaurant={handleSelectRestaurant}
+                />
+              )}
               <div className="restaurants-grid">
-                {restaurants.map(r => (
-                  <RestaurantCard
-                    key={r.id || r._id}
-                    restaurant={r}
-                    distanceKm={nearMeMode ? r.distance_km : null}
-                  />
-                ))}
+                {restaurants.map(r => {
+                  const rid = r.id || r._id
+                  const isHighlighted = selectedCardId === rid
+                  return (
+                    <div
+                      key={rid}
+                      ref={el => { cardRefs.current[rid] = el }}
+                      style={{
+                        outline: isHighlighted ? '3px solid #e67e22' : '3px solid transparent',
+                        borderRadius: '12px',
+                        transition: 'outline 0.3s ease',
+                      }}
+                    >
+                      <RestaurantCard
+                        restaurant={r}
+                        distanceKm={nearMeMode ? r.distance_km : null}
+                      />
+                    </div>
+                  )
+                })}
               </div>
               {!nearMeMode && totalPages > 1 && (
                 <div className="pagination">
