@@ -1,0 +1,113 @@
+hafsaayesha@Hafsas-MBP Food-Scope0001 % cd server
+hafsaayesha@Hafsas-MBP server % cs src
+zsh: command not found: cs
+hafsaayesha@Hafsas-MBP server % cd src
+hafsaayesha@Hafsas-MBP src % cd views
+hafsaayesha@Hafsas-MBP views % npm install
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: @react-leaflet/core@3.0.0
+npm warn Found: react@18.3.1
+npm warn node_modules/react
+npm warn   react@"^18.2.0" from the root project
+npm warn   3 more (react-dom, react-router, react-router-dom)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^19.0.0" from @react-leaflet/core@3.0.0
+npm warn node_modules/@react-leaflet/core
+npm warn   @react-leaflet/core@"^3.0.0" from react-leaflet@5.0.0
+npm warn   node_modules/react-leaflet
+npm warn
+npm warn Conflicting peer dependency: react@19.2.6
+npm warn node_modules/react
+npm warn   peer react@"^19.0.0" from @react-leaflet/core@3.0.0
+npm warn   node_modules/@react-leaflet/core
+npm warn     @react-leaflet/core@"^3.0.0" from react-leaflet@5.0.0
+npm warn     node_modules/react-leaflet
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: @react-leaflet/core@3.0.0
+npm warn Found: react-dom@18.3.1
+npm warn node_modules/react-dom
+npm warn   react-dom@"^18.2.0" from the root project
+npm warn   1 more (react-router-dom)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react-dom@"^19.0.0" from @react-leaflet/core@3.0.0
+npm warn node_modules/@react-leaflet/core
+npm warn   @react-leaflet/core@"^3.0.0" from react-leaflet@5.0.0
+npm warn   node_modules/react-leaflet
+npm warn
+npm warn Conflicting peer dependency: react-dom@19.2.6
+npm warn node_modules/react-dom
+npm warn   peer react-dom@"^19.0.0" from @react-leaflet/core@3.0.0
+npm warn   node_modules/@react-leaflet/core
+npm warn     @react-leaflet/core@"^3.0.0" from react-leaflet@5.0.0
+npm warn     node_modules/react-leaflet
+npm error code ERESOLVE
+npm error ERESOLVE could not resolve
+npm error
+npm error While resolving: react-leaflet@5.0.0
+npm error Found: react@18.3.1
+npm error node_modules/react
+npm error   react@"^18.2.0" from the root project
+npm error   peer react@"^18.3.1" from react-dom@18.3.1
+npm error   node_modules/react-dom
+npm error     react-dom@"^18.2.0" from the root project
+npm error     peer react-dom@">=16.8" from react-router-dom@6.30.3
+npm error     node_modules/react-router-dom
+npm error       react-router-dom@"^6.22.0" from the root project
+npm error   2 more (react-router, react-router-dom)
+npm error
+npm error Could not resolve dependency:
+npm error peer react@"^19.0.0" from react-leaflet@5.0.0
+npm error node_modules/react-leaflet
+npm error   react-leaflet@"^5.0.0" from the root project
+npm error
+npm error Conflicting peer dependency: react@19.2.6
+npm error node_modules/react
+npm error   peer react@"^19.0.0" from react-leaflet@5.0.0
+npm error   node_modules/react-leaflet
+npm error     react-leaflet@"^5.0.0" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /Users/hafsaayesha/.npm/_logs/2026-05-28T16_23_11_302Z-eresolve-report.txt
+npm error A complete log of this run can be found in: /Users/hafsaayesha/.npm/_logs/2026-05-28T16_23_11_302Z-debug-0.log
+hafsaayesha@Hafsas-MBP views % npm run dev
+
+> foodscope-client@1.0.0 dev
+> vite
+
+vite.config.js (1:387) [UNRESOLVED_IMPORT] Could not resolve 'vite' in vite.config.js
+   ╭─[ vite.config.js:1:388 ]
+   │
+ 1 │ const __vite_injected_original_dirname = "/Users/hafsaayesha/Downloads/Food-Scope0001/server/src/views";const __vite_injected_original_filename = "/Users/hafsaayesha/Downloads/Food-Scope0001/server/src/views/vite.config.js";const __vite_injected_original_import_meta_url = "file:///Users/hafsaayesha/Downloads/Food-Scope0001/server/src/views/vite.config.js";import { defineConfig } from 'vite'
+   │                                                                                                                                                                                                                                                                                                                                                                                                    ───┬──  
+   │                                                                                                                                                                                                                                                                                                                                                                                                       ╰──── Module not found, treating it as an external dependency
+───╯
+
+vite.config.js (2:18) [UNRESOLVED_IMPORT] Could not resolve '@vitejs/plugin-react' in vite.config.js
+   ╭─[ vite.config.js:2:19 ]
+   │
+ 2 │ import react from '@vitejs/plugin-react'
+   │                   ───────────┬──────────  
+   │                              ╰──────────── Module not found, treating it as an external dependency
+───╯
+
+failed to load config from /Users/hafsaayesha/Downloads/Food-Scope0001/server/src/views/vite.config.js
+error when starting dev server:
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'vite' imported from /Users/hafsaayesha/Downloads/Food-Scope0001/server/node_modules/.vite-temp/vite.config.js.timestamp-1779985473798-cde75cd7d5ebf.mjs
+    at packageResolve (node:internal/modules/esm/resolve:873:9)
+    at moduleResolve (node:internal/modules/esm/resolve:946:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1188:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:708:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:657:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:640:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:264:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:168:49) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+hafsaayesha@Hafsas-MBP views % 
