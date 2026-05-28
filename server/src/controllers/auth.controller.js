@@ -8,6 +8,8 @@ const { runTransaction } = require('../services/db.service');
 const { hashToken, createAccessToken } = require('../services/token.service');
 const { logAuditEvent } = require('../services/audit.service');
 const mailService = require('../services/mail.service');
+const config = require('../config');
+const isMailConfigured = !!(config.MAIL_HOST && config.MAIL_PORT && config.MAIL_USER && config.MAIL_PASS && config.MAIL_FROM);
 
 const registerAttemptStore = new Map();
 const forgotPasswordStore = new Map();
@@ -55,10 +57,18 @@ const register = async (req, res) => {
       throw createApiError(409, 'AUTH_EMAIL_EXISTS', 'CONFLICT_ERROR', 'Email already registered.');
     }
 
-    const user = await User.create({ name: name.trim(), email: email.toLowerCase(), password, role: role || 'user' });
+    const user = await User.create({
+      name: name.trim(),
+      email: email.toLowerCase(),
+      password,
+      role: role || 'user',
+      isVerified: !isMailConfigured
+    });
 
     res.status(201).json({
-      message: 'Account created. Check email for verification.',
+      message: isMailConfigured
+        ? 'Account created. Check email for verification.'
+        : 'Account created. You can log in immediately.',
       user: { id: user._id, name: user.name, email: user.email, role: user.role, created_at: user.createdAt }
     });
   } catch (err) {
