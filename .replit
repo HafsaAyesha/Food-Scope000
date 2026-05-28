@@ -58,3 +58,6 @@ externalPort = 80
 
 [userenv.shared]
 MONGO_URI = "mongodb+srv://hafsaaye021_db_user:foodscope@foodscope.xmozgas.mongodb.net/?appName=FoodScope"
+NODE_ENV = "development"
+PORT = "3000"
+FRONTEND_URL = "http://localhost:5000"
