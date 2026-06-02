@@ -31,6 +31,16 @@ const userSchema = new mongoose.Schema({
     default: false,
     index: true
   },
+  emailVerificationToken: {
+    type: String,
+    default: null,
+    select: false
+  },
+  emailVerificationExpires: {
+    type: Date,
+    default: null,
+    select: false
+  },
   isSuspended: {
     type: Boolean,
     default: false,
