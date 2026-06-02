@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { login as loginApi, getMe } from '../api/auth'
+import { login as loginApi } from '../api/auth'
 import { useAuth } from '../context/AuthContext'
-import client from '../api/client'
 
 export default function Login() {
   const { login } = useAuth()
@@ -11,22 +10,15 @@ export default function Login() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value })
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
     setError('')
     try {
       const res = await loginApi(form)
-      const { access_token } = res.data
-
-      // Set token on client before calling getMe
-      client.defaults.headers.common['Authorization'] = `Bearer ${access_token}`
-      localStorage.setItem('foodscope_token', access_token)
-
-      const meRes = await getMe()
-      login(access_token, meRes.data)
+      login(res.data)
       navigate('/')
     } catch (err) {
       setError(err.response?.data?.error?.message || 'Login failed. Check your credentials.')

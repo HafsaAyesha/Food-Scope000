@@ -38,6 +38,14 @@ export default function CreateRestaurant() {
       Object.keys(form).forEach(key => {
         if (form[key].trim()) payload[key] = form[key].trim()
       })
+      const lng = payload.lng != null ? Number(payload.lng) : 0
+      const lat = payload.lat != null ? Number(payload.lat) : 0
+      delete payload.lng
+      delete payload.lat
+      payload.location = {
+        type: 'Point',
+        coordinates: [Number.isFinite(lng) ? lng : 0, Number.isFinite(lat) ? lat : 0]
+      }
       const res = await createRestaurant(payload)
       const newId = res.data?.id || res.data?._id || res.data?.restaurant?.id || res.data?.restaurant?._id
       setSuccess('Restaurant created successfully!')

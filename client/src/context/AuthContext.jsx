@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { getMe } from '../api/auth'
-import client from '../api/client'
+import { getAccessToken, setTokens, clearTokens } from '../utils/token'
 
 const AuthContext = createContext(null)
 
@@ -9,14 +9,13 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const token = localStorage.getItem('foodscope_token')
+    const token = getAccessToken()
     if (token) {
-      client.defaults.headers.common['Authorization'] = `Bearer ${token}`
       getMe()
-        .then(res => setUser(res.data))
+        .then((res) => setUser(res.data?.user ?? res.data))
         .catch(() => {
-          localStorage.removeItem('foodscope_token')
-          delete client.defaults.headers.common['Authorization']
+          clearTokens()
+          setUser(null)
         })
         .finally(() => setLoading(false))
     } else {
@@ -24,15 +23,14 @@ export function AuthProvider({ children }) {
     }
   }, [])
 
-  const login = (token, userData) => {
-    localStorage.setItem('foodscope_token', token)
-    client.defaults.headers.common['Authorization'] = `Bearer ${token}`
+  const login = (data) => {
+    const { access_token, refresh_token, user: userData } = data
+    setTokens(access_token, refresh_token)
     setUser(userData)
   }
 
   const logout = () => {
-    localStorage.removeItem('foodscope_token')
-    delete client.defaults.headers.common['Authorization']
+    clearTokens()
     setUser(null)
   }
 

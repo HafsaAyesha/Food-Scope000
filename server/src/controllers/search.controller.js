@@ -16,7 +16,7 @@ const search = async (req, res) => {
     if (type === 'restaurant' || type === 'all') {
       restaurants = await Restaurant.find({
         ...restaurantQuery,
-        $or: [{ $text: { $search: text } }, { name: regex }, { description: regex }, { cuisine_type: regex }, { tags: regex }]
+        $text: { $search: text }
       })
         .sort({ score: { $meta: 'textScore' }, avg_rating: -1, createdAt: -1 })
         .skip(skip)

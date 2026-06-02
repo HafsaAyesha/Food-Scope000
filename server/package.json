@@ -28,7 +28,7 @@
     "joi": "^17.13.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.6.2",
-    "nodemailer": "^6.9.4",
+    "nodemailer": "^8.0.10",
     "pino": "^8.18.0",
     "pino-http": "^8.3.0",
     "rate-limiter-flexible": "^2.4.1",

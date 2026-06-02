@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { logout as logoutApi } from '../api/auth'
+import { getRefreshToken } from '../utils/token'
 
 export default function Navbar() {
   const { user, logout } = useAuth()
@@ -10,9 +11,9 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const handleLogout = async () => {
-    const token = localStorage.getItem('foodscope_token')
+    const refreshToken = getRefreshToken()
     try {
-      if (token) await logoutApi({ refresh_token: token })
+      if (refreshToken) await logoutApi({ refresh_token: refreshToken })
     } catch (e) {
       // ignore errors on logout
     }
