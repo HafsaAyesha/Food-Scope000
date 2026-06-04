@@ -19,7 +19,10 @@ export default function Login() {
     try {
       const res = await loginApi(form)
       login(res.data)
-      navigate('/')
+      const role = res.data?.user?.role
+      if (role === 'admin') navigate('/admin/dashboard')
+      else if (role === 'reviewer') navigate('/dashboard/reviewer')
+      else navigate('/restaurants')
     } catch (err) {
       setError(err.response?.data?.error?.message || 'Login failed. Check your credentials.')
     } finally {

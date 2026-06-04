@@ -8,7 +8,8 @@ const {
   listReviews,
   updateExistingReview,
   removeReview,
-  voteOnReview
+  voteOnReview,
+  flagReview
 } = require('../controllers/reviews.controller');
 
 router.post('/', authenticate, createNewReview);
@@ -26,5 +27,6 @@ router.delete('/:id', authenticate, loadReview, requireOwnership({
   forbiddenMessage: 'Not review owner or admin.'
 }), removeReview);
 router.post('/:id/vote', authenticate, loadReview, preventSelfVote, voteOnReview);
+router.post('/:id/flag', authenticate, flagReview);
 
 module.exports = router;

@@ -1,88 +1,128 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { createRestaurant } from '../api/restaurants'
-import { useAuth } from '../context/AuthContext'
+import { getMyRestaurant } from '../../api/users'
+import { getRestaurant, updateRestaurant } from '../../api/restaurants'
+import Spinner from '../../components/Spinner'
+import { getErrorMessage } from '../../utils/errors'
 
-export default function CreateRestaurant() {
-  const { user } = useAuth()
+const emptyForm = () => ({
+  name: '',
+  description: '',
+  cuisine_type: '',
+  price_range: '',
+  address: '',
+  lat: '',
+  lng: '',
+  thumbnail: '',
+  phone: '',
+  website: '',
+})
+
+export default function EditRestaurant() {
   const navigate = useNavigate()
-
-  const [form, setForm] = useState({
-    name: '',
-    description: '',
-    cuisine_type: '',
-    price_range: '',
-    address: '',
-    lat: '',
-    lng: '',
-    thumbnail: '',
-    phone: '',
-    website: '',
-  })
-  const [loading, setLoading] = useState(false)
+  const [restaurantId, setRestaurantId] = useState(null)
+  const [form, setForm] = useState(emptyForm())
+  const [initialForm, setInitialForm] = useState(emptyForm())
+  const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
 
-  const canCreate = user && (user.role === 'reviewer' || user.role === 'admin')
-
-  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value })
-
-  const handleSubmit = async e => {
-    e.preventDefault()
-    if (!form.name.trim()) return setError('Restaurant name is required.')
-    setLoading(true)
-    setError('')
-    setSuccess('')
-    try {
-      const payload = {}
-      Object.keys(form).forEach(key => {
-        if (String(form[key]).trim()) payload[key] = String(form[key]).trim()
+  useEffect(() => {
+    getMyRestaurant()
+      .then((res) => {
+        const id = res.data.id || res.data._id
+        setRestaurantId(id)
+        return getRestaurant(id).then((rRes) => rRes.data)
       })
-      const lng = payload.lng != null ? Number(payload.lng) : 0
-      const lat = payload.lat != null ? Number(payload.lat) : 0
-      delete payload.lng
-      delete payload.lat
+      .then((data) => {
+        const next = {
+          name: data.name || '',
+          description: data.description || '',
+          cuisine_type: data.cuisine_type || '',
+          price_range: data.price_range || '',
+          address: data.address || '',
+          lat: data.lat != null ? String(data.lat) : '',
+          lng: data.lng != null ? String(data.lng) : '',
+          thumbnail: data.thumbnail || '',
+          phone: '',
+          website: '',
+        }
+        setForm(next)
+        setInitialForm(next)
+      })
+      .catch((err) => {
+        if (err.response?.status === 404) {
+          navigate('/restaurants/new', { replace: true })
+        } else {
+          setError(getErrorMessage(err, 'Failed to load your restaurant.'))
+        }
+      })
+      .finally(() => setLoading(false))
+  }, [navigate])
+
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
+
+  const buildChangedPayload = () => {
+    const payload = {}
+    const textFields = ['name', 'description', 'cuisine_type', 'price_range', 'address', 'thumbnail']
+    textFields.forEach((key) => {
+      const current = String(form[key] || '').trim()
+      const initial = String(initialForm[key] || '').trim()
+      if (current !== initial) payload[key] = current
+    })
+
+    const latChanged = String(form.lat || '') !== String(initialForm.lat || '')
+    const lngChanged = String(form.lng || '') !== String(initialForm.lng || '')
+    if (latChanged || lngChanged) {
+      const lng = form.lng !== '' ? Number(form.lng) : 0
+      const lat = form.lat !== '' ? Number(form.lat) : 0
       payload.location = {
         type: 'Point',
         coordinates: [Number.isFinite(lng) ? lng : 0, Number.isFinite(lat) ? lat : 0]
       }
-      const res = await createRestaurant(payload)
-      const newId = res.data?.restaurant?.id || res.data?.restaurant?._id || res.data?.id
-      setSuccess('Restaurant created successfully!')
-      if (newId) navigate(`/restaurants/${newId}`)
-      else navigate('/restaurants')
+    }
+
+    return payload
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!restaurantId) return
+    if (!form.name.trim()) return setError('Restaurant name is required.')
+
+    const payload = buildChangedPayload()
+    if (Object.keys(payload).length === 0) {
+      navigate('/dashboard/reviewer', { state: { success: 'No changes to save.' } })
+      return
+    }
+
+    setSubmitting(true)
+    setError('')
+    try {
+      await updateRestaurant(restaurantId, payload)
+      navigate('/dashboard/reviewer', { state: { success: 'Restaurant listing updated.' } })
     } catch (err) {
-      setError(err.response?.data?.error?.message || 'Could not create restaurant. Please try again.')
+      setError(getErrorMessage(err, 'Could not update restaurant.'))
     } finally {
-      setLoading(false)
+      setSubmitting(false)
     }
   }
 
-  if (!canCreate) {
-    return (
-      <div className="container page-layout">
-        <div className="alert alert-error">
-          You need a Reviewer or Admin account to add restaurants.{' '}
-          <Link to="/register">Create one here</Link>.
-        </div>
-      </div>
-    )
-  }
+  if (loading) return <div className="page-center"><Spinner /></div>
 
   return (
     <div className="container page-layout">
       <div className="page-top">
         <div>
-          <h1 className="page-title">Add Restaurant</h1>
-          <p className="page-subtitle">Share a great place to eat with the community</p>
+          <h1 className="page-title">Edit Restaurant Listing</h1>
+          <p className="page-subtitle">Update your restaurant details</p>
         </div>
-        <Link to="/restaurants" className="btn btn-outline">← Back</Link>
+        <Link to="/dashboard/reviewer" className="btn btn-outline">← Back</Link>
       </div>
 
       <div className="create-restaurant-layout">
         <div className="card create-restaurant-form-card">
           {error && <div className="alert alert-error">{error}</div>}
-          {success && <div className="alert alert-success">{success}</div>}
 
           <form onSubmit={handleSubmit}>
             <div className="form-section-title">Basic Information</div>
@@ -240,36 +280,28 @@ export default function CreateRestaurant() {
                     src={form.thumbnail}
                     alt="Thumbnail preview"
                     className="thumbnail-preview"
-                    onError={e => { e.target.style.display = 'none' }}
+                    onError={(e) => { e.target.style.display = 'none' }}
                   />
                 </div>
               )}
             </div>
 
             <div className="btn-row" style={{ marginTop: '8px' }}>
-              <button type="submit" className="btn btn-primary" disabled={loading}>
-                {loading ? 'Creating...' : 'Create Restaurant'}
+              <button type="submit" className="btn btn-primary" disabled={submitting}>
+                {submitting ? 'Saving...' : 'Save Changes'}
               </button>
-              <Link to="/restaurants" className="btn btn-outline">Cancel</Link>
+              <Link to="/dashboard/reviewer" className="btn btn-outline">Cancel</Link>
             </div>
           </form>
         </div>
 
         <aside className="create-restaurant-tips card">
-          <h3 className="filter-title">Tips for a great listing</h3>
+          <h3 className="filter-title">Editing tips</h3>
           <ul className="tips-list">
-            <li>Write a clear, informative description</li>
-            <li>Specify the cuisine type so users can find you</li>
-            <li>Set an accurate price range</li>
-            <li>Include the full address for easy navigation</li>
-            <li>Add a high-quality thumbnail image</li>
-            <li> Add contact details so customers can reach you</li>
+            <li>Keep your description up to date</li>
+            <li>Verify your address and coordinates</li>
+            <li>Update your thumbnail when your branding changes</li>
           </ul>
-          <div style={{ marginTop: '20px', padding: '14px', background: 'var(--primary-light)', borderRadius: 'var(--radius-sm)' }}>
-            <p style={{ fontSize: '0.84rem', color: 'var(--primary-dark)', fontWeight: 500 }}>
-              Your listing will be reviewed by our team before it goes live.
-            </p>
-          </div>
         </aside>
       </div>
     </div>

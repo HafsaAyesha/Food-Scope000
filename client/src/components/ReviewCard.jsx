@@ -1,7 +1,8 @@
 import { useState } from 'react'
+import { MessageCircle, ThumbsDown, ThumbsUp } from 'lucide-react'
 import StarRating from './StarRating'
 import CommentSection from './CommentSection'
-import { voteReview, deleteReview, updateReview } from '../api/reviews'
+import { voteReview, deleteReview, updateReview, flagReview } from '../api/reviews'
 import { useAuth } from '../context/AuthContext'
 import { formatDate } from '../utils/format'
 import { getErrorMessage } from '../utils/errors'
@@ -15,6 +16,10 @@ export default function ReviewCard({ review, onUpdated }) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [voteMsg, setVoteMsg] = useState('')
+  const [showFlagForm, setShowFlagForm] = useState(false)
+  const [flagReason, setFlagReason] = useState('')
+  const [flagging, setFlagging] = useState(false)
+  const [flagMsg, setFlagMsg] = useState('')
 
   const reviewId = review.id || review._id
   const userId = user?.id || user?._id
@@ -39,6 +44,23 @@ export default function ReviewCard({ review, onUpdated }) {
       onUpdated && onUpdated()
     } catch (err) {
       alert(getErrorMessage(err, 'Could not delete review.'))
+    }
+  }
+
+  const handleFlag = async (e) => {
+    e.preventDefault()
+    if (!flagReason.trim()) return
+    setFlagging(true)
+    setFlagMsg('')
+    try {
+      await flagReview(reviewId, { reason: flagReason.trim() })
+      setFlagMsg('Review flagged. Thank you.')
+      setShowFlagForm(false)
+      setFlagReason('')
+    } catch (err) {
+      setFlagMsg(getErrorMessage(err, 'Could not flag review.'))
+    } finally {
+      setFlagging(false)
     }
   }
 
@@ -110,10 +132,10 @@ export default function ReviewCard({ review, onUpdated }) {
       <div className="review-actions">
         <div className="vote-buttons">
           <button className="vote-btn" onClick={() => handleVote('helpful')} title="Helpful">
-            👍 {review.helpful_count || 0}
+            <ThumbsUp size={16} aria-hidden /> {review.helpful_count || 0}
           </button>
           <button className="vote-btn" onClick={() => handleVote('not_helpful')} title="Not helpful">
-            👎 {review.not_helpful_count || 0}
+            <ThumbsDown size={16} aria-hidden /> {review.not_helpful_count || 0}
           </button>
           {voteMsg && <span className="vote-msg">{voteMsg}</span>}
         </div>
@@ -124,11 +146,57 @@ export default function ReviewCard({ review, onUpdated }) {
               <button className="btn-text danger" onClick={handleDelete}>Delete</button>
             </>
           )}
+          {user && !isOwn && (
+            <button
+              className="btn-text danger"
+              onClick={() => {
+                setShowFlagForm(v => !v)
+                setFlagMsg('')
+              }}
+            >
+              Flag
+            </button>
+          )}
           <button className="btn-text" onClick={() => setShowComments(v => !v)}>
-            💬 {showComments ? 'Hide Comments' : 'Comments'}
+            <MessageCircle size={16} aria-hidden /> {showComments ? 'Hide Comments' : 'Comments'}
           </button>
         </div>
       </div>
+
+      {showFlagForm && user && !isOwn && (
+        <form onSubmit={handleFlag} className="flag-review-form" style={{ marginTop: '12px' }}>
+          <div className="form-group">
+            <label className="label" htmlFor={`flag-reason-${reviewId}`}>Reason for flagging</label>
+            <input
+              id={`flag-reason-${reviewId}`}
+              type="text"
+              className="form-control"
+              placeholder="Describe the issue..."
+              value={flagReason}
+              onChange={e => setFlagReason(e.target.value)}
+              required
+              maxLength={500}
+            />
+          </div>
+          <div className="btn-row">
+            <button type="submit" className="btn btn-outline btn-sm" disabled={flagging}>
+              {flagging ? 'Submitting...' : 'Submit flag'}
+            </button>
+            <button
+              type="button"
+              className="btn btn-text btn-sm"
+              onClick={() => {
+                setShowFlagForm(false)
+                setFlagReason('')
+                setFlagMsg('')
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+          {flagMsg && <p className="vote-msg">{flagMsg}</p>}
+        </form>
+      )}
 
       {showComments && <CommentSection reviewId={reviewId} />}
     </div>

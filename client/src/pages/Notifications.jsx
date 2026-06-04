@@ -1,6 +1,23 @@
 import { useState, useEffect } from 'react'
+import { Bell, Info, MessageCircle, Star, Store } from 'lucide-react'
 import { getNotifications } from '../api/users'
 import Spinner from '../components/Spinner'
+
+const NotificationTypeIcon = ({ type }) => {
+  const props = { size: 18, 'aria-hidden': true }
+  switch (type) {
+    case 'restaurant_status':
+      return <Store {...props} />
+    case 'review':
+      return <Star {...props} />
+    case 'comment':
+      return <MessageCircle {...props} />
+    case 'system':
+      return <Info {...props} />
+    default:
+      return <Bell {...props} />
+  }
+}
 
 export default function Notifications() {
   const [notifications, setNotifications] = useState([])
@@ -17,16 +34,6 @@ export default function Notifications() {
   }
 
   useEffect(() => { fetchNotifications() }, [unreadOnly])
-
-  const typeIcon = type => {
-    const icons = {
-      restaurant_status: '🏪',
-      review: '⭐',
-      comment: '💬',
-      system: 'ℹ️'
-    }
-    return icons[type] || '🔔'
-  }
 
   return (
     <div className="container notifications-page">
@@ -48,13 +55,13 @@ export default function Notifications() {
         <div className="center-spinner"><Spinner /></div>
       ) : notifications.length === 0 ? (
         <div className="empty-state">
-          <p>🔔 No {unreadOnly ? 'unread ' : ''}notifications yet.</p>
+          <p><Bell size={18} aria-hidden /> No {unreadOnly ? 'unread ' : ''}notifications yet.</p>
         </div>
       ) : (
         <div className="notifications-list">
           {notifications.map(notif => (
             <div key={notif.id || notif._id} className={`notification-item ${notif.is_read ? '' : 'unread'}`}>
-              <span className="notif-icon">{typeIcon(notif.type)}</span>
+              <span className="notif-icon"><NotificationTypeIcon type={notif.type} /></span>
               <div className="notif-body">
                 <p className="notif-message">{notif.message}</p>
                 <span className="notif-date">

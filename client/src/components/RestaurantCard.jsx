@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { MapPin, UtensilsCrossed } from 'lucide-react'
 import StarRating from './StarRating'
 
 export default function RestaurantCard({ restaurant, distanceKm }) {
@@ -10,12 +11,12 @@ export default function RestaurantCard({ restaurant, distanceKm }) {
       <div className="restaurant-card-img">
         {thumbnail
           ? <img src={thumbnail} alt={name} />
-          : <div className="restaurant-card-placeholder">🍽️</div>
+          : <div className="restaurant-card-placeholder"><UtensilsCrossed size={32} aria-hidden /></div>
         }
         {price_range && <span className="price-badge">{price_range}</span>}
         {distanceKm != null && (
           <span className="price-badge" style={{ left: '8px', right: 'auto', background: 'rgba(0,0,0,0.65)' }}>
-            📍 {Number(distanceKm).toFixed(1)} km
+            <MapPin size={14} aria-hidden /> {Number(distanceKm).toFixed(1)} km
           </span>
         )}
       </div>
@@ -26,7 +27,11 @@ export default function RestaurantCard({ restaurant, distanceKm }) {
           <StarRating value={Math.round(avg_rating || 0)} size="sm" />
           <span className="rating-number">{avg_rating ? Number(avg_rating).toFixed(1) : '–'}</span>
         </div>
-        {address && <p className="restaurant-card-address">📍 {address}</p>}
+        {address && (
+          <p className="restaurant-card-address">
+            <MapPin size={14} aria-hidden /> {address}
+          </p>
+        )}
       </div>
     </Link>
   )

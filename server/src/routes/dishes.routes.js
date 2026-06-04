@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 const Restaurant = require('../models/restaurant.model');
 const { authenticate } = require('../middlewares/auth.middleware');
+const { requireRole } = require('../middlewares/role.middleware');
 const { loadResource, requireOwnership } = require('../middlewares/ownership.middleware');
 const {
   listDishes,
@@ -20,19 +21,19 @@ router.use(loadResource({
 }));
 
 router.get('/', listDishes);
-router.post('/', authenticate, requireOwnership({
+router.post('/', authenticate, requireRole('reviewer'), requireOwnership({
   resourceKey: 'restaurant',
   ownerField: 'owner_id',
   forbiddenCode: 'RESTAURANTS_FORBIDDEN',
   forbiddenMessage: 'Not the owner or admin.'
 }), addDish);
-router.put('/:dish_id', authenticate, requireOwnership({
+router.put('/:dish_id', authenticate, requireRole('reviewer'), requireOwnership({
   resourceKey: 'restaurant',
   ownerField: 'owner_id',
   forbiddenCode: 'RESTAURANTS_FORBIDDEN',
   forbiddenMessage: 'Not the owner or admin.'
 }), updateDish);
-router.delete('/:dish_id', authenticate, requireOwnership({
+router.delete('/:dish_id', authenticate, requireRole('reviewer'), requireOwnership({
   resourceKey: 'restaurant',
   ownerField: 'owner_id',
   forbiddenCode: 'RESTAURANTS_FORBIDDEN',

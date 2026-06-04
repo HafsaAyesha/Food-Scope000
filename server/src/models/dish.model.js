@@ -48,6 +48,24 @@ const dishSchema = new mongoose.Schema({
     default: '',
     trim: true
   },
+  category: {
+    type: String,
+    default: '',
+    trim: true,
+    maxlength: 60
+  },
+  tags: {
+    type: [{ type: String, trim: true, lowercase: true }],
+    validate: {
+      validator: (v) => v.length <= 10,
+      message: 'A dish cannot have more than 10 tags'
+    },
+    default: []
+  },
+  available: {
+    type: Boolean,
+    default: true
+  },
   restaurant_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Restaurant',

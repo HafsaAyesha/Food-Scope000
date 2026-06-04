@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getRestaurant, getDishes, bookmarkRestaurant, deleteRestaurant } from '../api/restaurants'
+import { getMyRestaurant } from '../api/users'
 import { getReviews, createReview } from '../api/reviews'
 import { useAuth } from '../context/AuthContext'
 import { isAdmin, isOwner } from '../utils/permissions'
 import { formatRating, formatPrice, pluralize } from '../utils/format'
 import { getErrorMessage } from '../utils/errors'
+import { Bookmark, MapPin } from 'lucide-react'
 import StarRating from '../components/StarRating'
 import ReviewCard from '../components/ReviewCard'
 import Spinner from '../components/Spinner'
@@ -22,6 +24,7 @@ export default function RestaurantDetail() {
   const [totalReviews, setTotalReviews] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [pendingApproval, setPendingApproval] = useState(false)
   const [bookmarkMsg, setBookmarkMsg] = useState('')
   const [reviewSort, setReviewSort] = useState('most_helpful')
 
@@ -43,17 +46,50 @@ export default function RestaurantDetail() {
 
   useEffect(() => {
     setLoading(true)
+    setError('')
+    setPendingApproval(false)
+
+    const restaurantPromise = getRestaurant(id)
+      .then(res => ({ ok: true, data: res.data }))
+      .catch(() => ({ ok: false }))
+
+    const myRestaurantPromise = user?.role === 'reviewer'
+      ? getMyRestaurant().then(res => res.data).catch(() => null)
+      : Promise.resolve(null)
+
     Promise.all([
-      getRestaurant(id),
-      getDishes(id),
+      restaurantPromise,
+      getDishes(id).catch(() => ({ data: { dishes: [] } })),
+      myRestaurantPromise
     ])
-      .then(([rRes, dRes]) => {
-        setRestaurant(rRes.data)
-        setDishes(dRes.data.dishes || [])
+      .then(([rResult, dRes, myRestaurant]) => {
+        if (rResult.ok) {
+          setRestaurant(rResult.data)
+        } else if (
+          myRestaurant &&
+          String(myRestaurant.id || myRestaurant._id) === String(id)
+        ) {
+          setRestaurant({
+            id: myRestaurant.id || myRestaurant._id,
+            name: myRestaurant.name,
+            description: myRestaurant.description,
+            cuisine_type: myRestaurant.cuisine_type,
+            price_range: myRestaurant.price_range,
+            address: myRestaurant.address,
+            avg_rating: myRestaurant.avg_rating,
+            thumbnail: myRestaurant.thumbnail,
+            status: myRestaurant.status,
+            owner_id: user?.id || user?._id,
+            tags: []
+          })
+          setPendingApproval(myRestaurant.status === 'pending')
+        } else {
+          setError('Restaurant not found.')
+        }
+        setDishes(dRes.data?.dishes || [])
       })
-      .catch(() => setError('Restaurant not found.'))
       .finally(() => setLoading(false))
-  }, [id])
+  }, [id, user?.id, user?.role])
 
   useEffect(() => {
     fetchReviews()
@@ -113,10 +149,15 @@ export default function RestaurantDetail() {
 
   const userIsAdmin = isAdmin(user)
   const userIsOwner = isOwner(user, restaurant)
+  const showPendingBanner = restaurant.status === 'pending' && userIsOwner
 
   return (
     <div className="container restaurant-detail">
-      {/* Header */}
+      {(pendingApproval || showPendingBanner) && (
+        <div className="alert alert-success">
+          Your restaurant is pending admin approval and is not yet publicly visible.
+        </div>
+      )}
       <div className="restaurant-hero">
         {restaurant.thumbnail && (
           <img src={restaurant.thumbnail} alt={restaurant.name} className="restaurant-hero-img" />
@@ -134,7 +175,11 @@ export default function RestaurantDetail() {
             <span className="rating-number lg">{formatRating(avgRating)}</span>
             <span className="review-count">({pluralize(totalReviews, 'review')})</span>
           </div>
-          {restaurant.address && <p className="restaurant-address">📍 {restaurant.address}</p>}
+          {restaurant.address && (
+            <p className="restaurant-address">
+              <MapPin size={16} aria-hidden /> {restaurant.address}
+            </p>
+          )}
           {restaurant.description && <p className="restaurant-description">{restaurant.description}</p>}
           {restaurant.tags?.length > 0 && (
             <div className="tag-list">
@@ -143,7 +188,7 @@ export default function RestaurantDetail() {
           )}
           <div className="restaurant-action-row">
             <button onClick={handleBookmark} className="btn btn-outline">
-              🔖 {bookmarkMsg || 'Bookmark'}
+              <Bookmark size={16} aria-hidden /> {bookmarkMsg || 'Bookmark'}
             </button>
             {(userIsAdmin || userIsOwner) && (
               <button onClick={handleDelete} className="btn btn-danger btn-sm">Delete Restaurant</button>

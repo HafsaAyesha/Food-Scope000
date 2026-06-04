@@ -15,6 +15,9 @@ import AdminUsers from './pages/admin/AdminUsers'
 import AdminRestaurants from './pages/admin/AdminRestaurants'
 import AdminReviews from './pages/admin/AdminReviews'
 import CreateRestaurant from './pages/CreateRestaurant'
+import ReviewerDashboard from './pages/reviewer/ReviewerDashboard'
+import MenuManager from './pages/reviewer/MenuManager'
+import EditRestaurant from './pages/reviewer/EditRestaurant'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import VerifyEmail from './pages/VerifyEmail'
@@ -42,6 +45,14 @@ function ReviewerRoute({ children }) {
   return children
 }
 
+function ReviewerDashboardRoute({ children }) {
+  const { user, loading } = useAuth()
+  if (loading) return <div className="page-center"><Spinner /></div>
+  if (!user) return <Navigate to="/restaurants" replace />
+  if (user.role !== 'reviewer') return <Navigate to="/restaurants" replace />
+  return children
+}
+
 function AppRoutes() {
   return (
     <>
@@ -57,10 +68,14 @@ function AppRoutes() {
           <Route path="/restaurants" element={<RestaurantList />} />
           <Route path="/restaurants/new" element={<ReviewerRoute><CreateRestaurant /></ReviewerRoute>} />
           <Route path="/restaurants/:id" element={<RestaurantDetail />} />
+          <Route path="/dashboard/reviewer" element={<ReviewerDashboardRoute><ReviewerDashboard /></ReviewerDashboardRoute>} />
+          <Route path="/dashboard/reviewer/menu" element={<ReviewerDashboardRoute><MenuManager /></ReviewerDashboardRoute>} />
+          <Route path="/dashboard/reviewer/edit" element={<ReviewerDashboardRoute><EditRestaurant /></ReviewerDashboardRoute>} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
           <Route path="/notifications" element={<PrivateRoute><Notifications /></PrivateRoute>} />
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+          <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
           <Route path="/admin/restaurants" element={<AdminRoute><AdminRestaurants /></AdminRoute>} />
           <Route path="/admin/reviews" element={<AdminRoute><AdminReviews /></AdminRoute>} />

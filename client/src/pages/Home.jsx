@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { MapPin, Star } from 'lucide-react'
 import { getRestaurants } from '../api/restaurants'
 import { getTags } from '../api/tags'
 import { getNearby, getIpLocation, resolveLocation } from '../api/geo'
@@ -317,7 +318,9 @@ export default function Home() {
                 <Link key={r.id || r._id} to={`/restaurants/${r.id || r._id}`} className="restaurant-card">
                   <div className="restaurant-card-body">
                     <h3 className="restaurant-card-name">{r.name}</h3>
-                    <p className="restaurant-card-address">📍 {r.distance_km} km away · ⭐ {r.avg_rating}</p>
+                    <p className="restaurant-card-address">
+                      <MapPin size={14} aria-hidden /> {r.distance_km} km away · <Star size={14} aria-hidden /> {r.avg_rating}
+                    </p>
                   </div>
                 </Link>
               ))}

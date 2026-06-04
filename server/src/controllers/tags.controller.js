@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Tag = require('../models/tag.model');
+const Dish = require('../models/dish.model');
 const { createApiError, handleError } = require('../utils/api-error');
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -11,6 +12,12 @@ const ALLOWED_TYPES = ['cuisine', 'dietary', 'feature'];
 const listTags = async (req, res) => {
   try {
     const { type } = req.query;
+
+    if (type === 'dish') {
+      const tags = await Dish.distinct('tags');
+      return res.json(tags.filter(Boolean).sort());
+    }
+
     const filter = { status: 'approved' };
 
     if (type !== undefined) {

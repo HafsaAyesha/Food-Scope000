@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
+import { MapPin } from 'lucide-react'
 import { getRestaurants } from '../api/restaurants'
 import { getNearby } from '../api/geo'
 import { getTags } from '../api/tags'
@@ -170,7 +171,7 @@ export default function RestaurantList() {
             onClick={handleNearMeToggle}
             style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
           >
-            📍 {nearMeMode ? 'Near Me (on)' : 'Near Me'}
+            <MapPin size={16} aria-hidden /> {nearMeMode ? 'Near Me (on)' : 'Near Me'}
           </button>
           {canCreateRestaurant(user) && (
             <Link to="/restaurants/new" className="btn btn-primary">+ Add Restaurant</Link>

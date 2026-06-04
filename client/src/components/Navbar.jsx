@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Settings, UtensilsCrossed } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { logout as logoutApi } from '../api/auth'
 import { getRefreshToken } from '../utils/token'
@@ -28,7 +29,7 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="container navbar-inner">
         <Link to="/" className="navbar-brand" onClick={() => setMenuOpen(false)}>
-          🍽️ <span>FoodScope</span>
+          <UtensilsCrossed size={22} aria-hidden /> <span>FoodScope</span>
         </Link>
 
         <button className="hamburger" onClick={() => setMenuOpen(v => !v)} aria-label="Toggle menu">
@@ -42,13 +43,18 @@ export default function Navbar() {
           {user ? (
             <>
               <Link to="/notifications" className={isActive('/notifications')} onClick={() => setMenuOpen(false)}>Notifications</Link>
+              {user.role === 'reviewer' && (
+                <Link to="/dashboard/reviewer" className={isActive('/dashboard/reviewer')} onClick={() => setMenuOpen(false)}>
+                  My Dashboard
+                </Link>
+              )}
               <Link to="/profile" className={isActive('/profile')} onClick={() => setMenuOpen(false)}>
                 <span className="avatar-sm">{user.name?.[0]?.toUpperCase() || 'U'}</span>
                 {user.name?.split(' ')[0]}
               </Link>
               {user.role === 'admin' && (
                 <Link to="/admin" className={`nav-link admin-link ${location.pathname.startsWith('/admin') ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>
-                  ⚙ Admin
+                  <Settings size={16} aria-hidden /> Admin
                 </Link>
               )}
               <button onClick={handleLogout} className="btn btn-outline btn-sm">Logout</button>

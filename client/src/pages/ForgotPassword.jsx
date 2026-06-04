@@ -28,7 +28,7 @@ export default function ForgotPassword() {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-header">
-          <span className="auth-icon">🔑</span>
+          <span className="auth-icon"></span>
           <h1>Reset Password</h1>
           <p>Enter your email and we'll send you a reset link</p>
         </div>
