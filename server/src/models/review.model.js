@@ -55,10 +55,31 @@ const reviewSchema = new mongoose.Schema({
   archived_at: {
     type: Date,
     default: null
+  },
+  flags: {
+    type: [{
+      flagged_by: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+      },
+      reason: {
+        type: String,
+        required: true,
+        trim: true,
+        maxlength: 500
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now
+      }
+    }],
+    default: []
   }
 }, { timestamps: true });
 
 reviewSchema.index({ user_id: 1, restaurant_id: 1 }, { unique: true });
 reviewSchema.index({ restaurant_id: 1, status: 1, helpful_count: -1, createdAt: -1 });
+reviewSchema.index({ _id: 1, 'flags.flagged_by': 1 }, { unique: true });
 
 module.exports = mongoose.model('Review', reviewSchema);

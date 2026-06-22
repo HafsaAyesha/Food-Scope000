@@ -15,6 +15,9 @@ app.use(helmet());
 
 // CORS: allow configured frontend origins plus Replit dev domains
 const allowedOrigins = (String(config.FRONTEND_URL || '')).split(',').map((s) => s.trim()).filter(Boolean);
+if (!allowedOrigins.includes('http://localhost:5173')) {
+  allowedOrigins.push('http://localhost:5173');
+}
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true); // allow server-to-server or same-origin

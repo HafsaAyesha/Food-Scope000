@@ -73,4 +73,41 @@ const voteOnReview = async (req, res) => {
   }
 };
 
-module.exports = { createNewReview, listReviews, updateExistingReview, removeReview, voteOnReview };
+const flagReview = async (req, res) => {
+  try {
+    const Review = require('../models/review.model');
+    const { reason } = req.body;
+
+    if (!reason || typeof reason !== 'string' || reason.trim() === '') {
+      throw createApiError(400, 'REVIEWS_FLAG_REASON_REQUIRED', 'VALIDATION_ERROR', 'reason is required.');
+    }
+
+    const review = await Review.findById(req.params.id);
+    if (!review || review.status === 'archived') {
+      throw createApiError(404, 'REVIEWS_NOT_FOUND', 'NOT_FOUND_ERROR', 'Review not found.');
+    }
+
+    const userId = String(req.user.id || req.user._id);
+    const alreadyFlagged = review.flags.some((f) => f.flagged_by.toString() === userId);
+    if (alreadyFlagged) {
+      return res.status(409).json({ message: 'You have already flagged this review' });
+    }
+
+    review.flags.push({
+      flagged_by: req.user.id || req.user._id,
+      reason: reason.trim(),
+      createdAt: new Date()
+    });
+    await review.save();
+
+    res.status(201).json({
+      message: 'Review flagged successfully.',
+      review_id: review._id,
+      flag_count: review.flags.length
+    });
+  } catch (err) {
+    handleError(res, err);
+  }
+};
+
+module.exports = { createNewReview, listReviews, updateExistingReview, removeReview, voteOnReview, flagReview };
